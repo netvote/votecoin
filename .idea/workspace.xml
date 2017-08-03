@@ -2,13 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="74bbc9e8-237f-4794-ac5f-d402258cec5b" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.gitignore" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/GOPATH__vtc_.xml" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/npm-debug.log" afterPath="" />
     </list>
     <ignored path=".idea/" />
     <ignored mask="*.iml" />
@@ -67,8 +65,49 @@
             <state relative-caret-position="0">
               <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding>
-                <marker date="1501778870000" expanded="false" signature="33624:33628" ph="&lt;" />
-                <marker date="1501778870000" expanded="false" signature="33631:33635" ph="&gt;" />
+                <marker date="1501778942000" expanded="true" signature="39074:39091" ph="..." />
+                <marker date="1501778942000" expanded="true" signature="39074:39109" ph="..." />
+                <marker date="1501778942000" expanded="true" signature="39074:39122" ph="..." />
+                <marker date="1501778942000" expanded="true" signature="39074:39137" ph="..." />
+                <marker date="1501778942000" expanded="true" signature="39172:41801" ph="..." />
+                <marker date="1501778942000" expanded="true" signature="39185:41786" ph="..." />
+                <marker date="1501778942000" expanded="true" signature="39239:39534" ph="..." />
+                <marker date="1501778942000" expanded="true" signature="39258:39519" ph="..." />
+                <marker date="1501778942000" expanded="true" signature="39321:39499" ph="..." />
+                <marker date="1501778942000" expanded="true" signature="39361:39465" ph="..." />
+                <marker date="1501778942000" expanded="true" signature="39382:39443" ph="..." />
+                <marker date="1501778942000" expanded="true" signature="39584:39911" ph="..." />
+                <marker date="1501778942000" expanded="true" signature="39603:39896" ph="..." />
+                <marker date="1501778942000" expanded="true" signature="39698:39876" ph="..." />
+                <marker date="1501778942000" expanded="true" signature="39738:39842" ph="..." />
+                <marker date="1501778942000" expanded="true" signature="39759:39820" ph="..." />
+                <marker date="1501778942000" expanded="true" signature="39962:40308" ph="..." />
+                <marker date="1501778942000" expanded="true" signature="39981:40293" ph="..." />
+                <marker date="1501778942000" expanded="true" signature="40095:40273" ph="..." />
+                <marker date="1501778942000" expanded="true" signature="40135:40239" ph="..." />
+                <marker date="1501778942000" expanded="true" signature="40156:40217" ph="..." />
+                <marker date="1501778942000" expanded="true" signature="40351:40657" ph="..." />
+                <marker date="1501778942000" expanded="true" signature="40370:40642" ph="..." />
+                <marker date="1501778942000" expanded="true" signature="40444:40622" ph="..." />
+                <marker date="1501778942000" expanded="true" signature="40484:40588" ph="..." />
+                <marker date="1501778942000" expanded="true" signature="40505:40566" ph="..." />
+                <marker date="1501778942000" expanded="true" signature="40708:41053" ph="..." />
+                <marker date="1501778942000" expanded="true" signature="40727:41038" ph="..." />
+                <marker date="1501778942000" expanded="true" signature="40801:41018" ph="..." />
+                <marker date="1501778942000" expanded="true" signature="40841:40984" ph="..." />
+                <marker date="1501778942000" expanded="true" signature="40862:40962" ph="..." />
+                <marker date="1501778942000" expanded="true" signature="41088:41399" ph="..." />
+                <marker date="1501778942000" expanded="true" signature="41107:41384" ph="..." />
+                <marker date="1501778942000" expanded="true" signature="41186:41364" ph="..." />
+                <marker date="1501778942000" expanded="true" signature="41226:41330" ph="..." />
+                <marker date="1501778942000" expanded="true" signature="41247:41308" ph="..." />
+                <marker date="1501778942000" expanded="true" signature="41451:41772" ph="..." />
+                <marker date="1501778942000" expanded="true" signature="41470:41757" ph="..." />
+                <marker date="1501778942000" expanded="false" signature="41502:41506" ph="&lt;" />
+                <marker date="1501778942000" expanded="false" signature="41509:41513" ph="&gt;" />
+                <marker date="1501778942000" expanded="true" signature="41559:41737" ph="..." />
+                <marker date="1501778942000" expanded="true" signature="41599:41703" ph="..." />
+                <marker date="1501778942000" expanded="true" signature="41620:41681" ph="..." />
               </folding>
             </state>
           </provider>
@@ -310,11 +349,6 @@
               <item name="vtc" type="b2602c69:ProjectViewProjectNode" />
               <item name="vtc" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="vtc" type="b2602c69:ProjectViewProjectNode" />
-              <item name="vtc" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
@@ -329,6 +363,7 @@
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15527344" />
     <property name="project.structure.side.proportion" value="0.2" />
+    <property name="GO_FMT" value="false" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -436,12 +471,20 @@
       <updated>1501533737994</updated>
       <workItem from="1501533739245" duration="1397000" />
       <workItem from="1501543953390" duration="21930000" />
-      <workItem from="1501766533085" duration="1052000" />
+      <workItem from="1501766533085" duration="1127000" />
     </task>
+    <task id="LOCAL-00001" summary="removing .idea from git">
+      <created>1501778931013</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1501778931013</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="24379000" />
+    <option name="totallyTimeSpent" value="24454000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
@@ -474,6 +517,10 @@
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="removing .idea from git" />
+    <option name="LAST_COMMIT_MESSAGE" value="removing .idea from git" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -624,8 +671,49 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <marker date="1501778870000" expanded="false" signature="33624:33628" ph="&lt;" />
-            <marker date="1501778870000" expanded="false" signature="33631:33635" ph="&gt;" />
+            <marker date="1501778942000" expanded="true" signature="39074:39091" ph="..." />
+            <marker date="1501778942000" expanded="true" signature="39074:39109" ph="..." />
+            <marker date="1501778942000" expanded="true" signature="39074:39122" ph="..." />
+            <marker date="1501778942000" expanded="true" signature="39074:39137" ph="..." />
+            <marker date="1501778942000" expanded="true" signature="39172:41801" ph="..." />
+            <marker date="1501778942000" expanded="true" signature="39185:41786" ph="..." />
+            <marker date="1501778942000" expanded="true" signature="39239:39534" ph="..." />
+            <marker date="1501778942000" expanded="true" signature="39258:39519" ph="..." />
+            <marker date="1501778942000" expanded="true" signature="39321:39499" ph="..." />
+            <marker date="1501778942000" expanded="true" signature="39361:39465" ph="..." />
+            <marker date="1501778942000" expanded="true" signature="39382:39443" ph="..." />
+            <marker date="1501778942000" expanded="true" signature="39584:39911" ph="..." />
+            <marker date="1501778942000" expanded="true" signature="39603:39896" ph="..." />
+            <marker date="1501778942000" expanded="true" signature="39698:39876" ph="..." />
+            <marker date="1501778942000" expanded="true" signature="39738:39842" ph="..." />
+            <marker date="1501778942000" expanded="true" signature="39759:39820" ph="..." />
+            <marker date="1501778942000" expanded="true" signature="39962:40308" ph="..." />
+            <marker date="1501778942000" expanded="true" signature="39981:40293" ph="..." />
+            <marker date="1501778942000" expanded="true" signature="40095:40273" ph="..." />
+            <marker date="1501778942000" expanded="true" signature="40135:40239" ph="..." />
+            <marker date="1501778942000" expanded="true" signature="40156:40217" ph="..." />
+            <marker date="1501778942000" expanded="true" signature="40351:40657" ph="..." />
+            <marker date="1501778942000" expanded="true" signature="40370:40642" ph="..." />
+            <marker date="1501778942000" expanded="true" signature="40444:40622" ph="..." />
+            <marker date="1501778942000" expanded="true" signature="40484:40588" ph="..." />
+            <marker date="1501778942000" expanded="true" signature="40505:40566" ph="..." />
+            <marker date="1501778942000" expanded="true" signature="40708:41053" ph="..." />
+            <marker date="1501778942000" expanded="true" signature="40727:41038" ph="..." />
+            <marker date="1501778942000" expanded="true" signature="40801:41018" ph="..." />
+            <marker date="1501778942000" expanded="true" signature="40841:40984" ph="..." />
+            <marker date="1501778942000" expanded="true" signature="40862:40962" ph="..." />
+            <marker date="1501778942000" expanded="true" signature="41088:41399" ph="..." />
+            <marker date="1501778942000" expanded="true" signature="41107:41384" ph="..." />
+            <marker date="1501778942000" expanded="true" signature="41186:41364" ph="..." />
+            <marker date="1501778942000" expanded="true" signature="41226:41330" ph="..." />
+            <marker date="1501778942000" expanded="true" signature="41247:41308" ph="..." />
+            <marker date="1501778942000" expanded="true" signature="41451:41772" ph="..." />
+            <marker date="1501778942000" expanded="true" signature="41470:41757" ph="..." />
+            <marker date="1501778942000" expanded="false" signature="41502:41506" ph="&lt;" />
+            <marker date="1501778942000" expanded="false" signature="41509:41513" ph="&gt;" />
+            <marker date="1501778942000" expanded="true" signature="41559:41737" ph="..." />
+            <marker date="1501778942000" expanded="true" signature="41599:41703" ph="..." />
+            <marker date="1501778942000" expanded="true" signature="41620:41681" ph="..." />
           </folding>
         </state>
       </provider>
