@@ -3,11 +3,13 @@ pragma solidity ^0.4.4;
 
 contract Ballot {
 
+  event ballotCreated(address owner);
   address public owner;
 
   Decision[] decisions;
   bytes32[] decisionNames;
   bool activated;
+  bool closed;
 
   mapping (address => bool) public voted;
   mapping (address => bool) public voters;
@@ -24,15 +26,21 @@ contract Ballot {
 
   function Ballot(){
     owner = msg.sender;
+    ballotCreated(owner);
   }
 
-  function castVote(uint256[] selections){
-    require(voters[msg.sender] && !voted[msg.sender] && optionCount == decisions.length);
+  function getOptionResults(uint256 d, uint256 o) constant returns (uint res){
+    res = decisions[d].tally[o];
+  }
 
-    s = 0;
+  function castVote(uint[] selections){
+    require(activated && !closed && voters[msg.sender] && !voted[msg.sender] && selections.length == decisions.length);
+    uint256 s = 0;
     for (uint d = 0; d < decisions.length; d++) {
-      decisions[d].tally[s] = selections[s];
+      decisions[d].tally[selections[s]]++;
+      s++;
     }
+    voted[msg.sender] = true;
   }
 
   function addVoter(address voter) {
@@ -75,7 +83,13 @@ contract Ballot {
   }
 
   function activate(){
+    require(owner == msg.sender && !activated);
     activated = true;
+  }
+
+  function close(){
+    require(owner == msg.sender && activated);
+    closed = true;
   }
 
   function getOption(uint256 decIndex, uint256 optIndex) constant returns (bytes32 name){
@@ -83,7 +97,7 @@ contract Ballot {
   }
 
   function addDecision(bytes32 name) {
-    require(owner == msg.sender);
+    require(owner == msg.sender && !activated);
 
     decisions.push(Decision({
         name: name,
@@ -95,7 +109,7 @@ contract Ballot {
   }
 
   function addOption(uint256 index, bytes32 option){
-    require(owner == msg.sender);
+    require(owner == msg.sender && !activated);
     decisions[index].options.push(option);
     decisions[index].tally.push(0);
   }
