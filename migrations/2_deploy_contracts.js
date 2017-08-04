@@ -6,10 +6,10 @@ module.exports = function(deployer) {
 
   const startBlock = web3.eth.blockNumber + 2;
   const endBlock = startBlock + 300;
-  const rate = 4;
+  const rate = 40;
   const wallet = web3.eth.accounts[0];
 
-  const totalSupply = 2000000;
+  const totalSupply = 20000000;
   const weiCap = web3.toWei(0.025, "ether") * totalSupply;
 
   deployer.deploy(VotecoinCappedCrowdsale, startBlock, endBlock, rate, wallet, weiCap);
