@@ -30,7 +30,7 @@ contract TestBallot {
         b.addOption(0, "perot");
 
         //add owner as voter
-        b.addVoter(b.getOwner());
+        b.addVoter(b.owner());
 
         //activate election
         b.activate();
@@ -61,7 +61,7 @@ contract TestBallot {
         b.addOption(1, "Smoltz");
 
         //add owner as voter
-        b.addVoter(b.getOwner());
+        b.addVoter(b.owner());
 
         //activate election
         b.activate();

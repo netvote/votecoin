@@ -1,14 +1,19 @@
 pragma solidity ^0.4.4;
 
-contract Ballot {
+import 'zeppelin-solidity/contracts/ownership/Ownable.sol';
 
-  event ballotCreated(address owner);
-  address public owner;
+contract Ballot is Ownable {
 
+  enum Stages {
+    Building,
+    Voting,
+    Closed
+  }
+
+  // This is the current stage.
+  Stages public stage = Stages.Building;
   Decision[] decisions;
   bytes32[] decisionNames;
-  bool activated;
-  bool closed;
 
   mapping (address => bool) public voted;
   mapping (address => bool) public voters;
@@ -23,17 +28,22 @@ contract Ballot {
     bytes32 name;
   }
 
-  function Ballot(){
-    owner = msg.sender;
-    ballotCreated(owner);
-  }
-
   function getOptionResults(uint256 d, uint256 o) constant returns (uint res){
     res = decisions[d].tally[o];
   }
 
-  function castVote(uint[] selections){
-    require(activated && !closed && voters[msg.sender] && !voted[msg.sender] && selections.length == decisions.length);
+  modifier building() {
+    require(stage == Stages.Building);
+    _;
+  }
+
+  modifier voting() {
+    require(stage == Stages.Voting);
+    _;
+  }
+
+  function castVote(uint[] selections) voting {
+    require(voters[msg.sender] && !voted[msg.sender] && selections.length == decisions.length);
     uint256 s = 0;
     for (uint d = 0; d < decisions.length; d++) {
       decisions[d].tally[selections[s]]++;
@@ -42,21 +52,15 @@ contract Ballot {
     voted[msg.sender] = true;
   }
 
-  function addVoter(address voter) {
-    require(owner == msg.sender);
+  function addVoter(address voter) building onlyOwner {
     voters[voter] = true;
   }
 
-  function removeVoter(address voter) {
-    require(owner == msg.sender);
+  function removeVoter(address voter) building onlyOwner {
     voters[voter] = false;
   }
 
-  function getOwner() constant returns (address own){
-    own = msg.sender;
-  }
-
-  function getDecisionCount() constant returns (uint256 l){
+  function getDecisionCount() constant returns (uint256 l) {
     l = decisions.length;
   }
 
@@ -76,27 +80,24 @@ contract Ballot {
     name = decisions[index].name;
   }
 
-  function reset(){
+  function reset() building onlyOwner {
     delete decisions;
     delete decisionNames;
   }
 
-  function activate(){
-    require(owner == msg.sender && !activated);
-    activated = true;
+  function activate() building onlyOwner {
+    stage = Stages.Voting;
   }
 
-  function close(){
-    require(owner == msg.sender && activated);
-    closed = true;
+  function close() onlyOwner {
+    stage = Stages.Closed;
   }
 
   function getOption(uint256 decIndex, uint256 optIndex) constant returns (bytes32 name){
     name = decisions[decIndex].options[optIndex];
   }
 
-  function addDecision(bytes32 name) {
-    require(owner == msg.sender && !activated);
+  function addDecision(bytes32 name) building onlyOwner {
 
     decisions.push(Decision({
         name: name,
@@ -107,8 +108,7 @@ contract Ballot {
     decisionNames.push(name);
   }
 
-  function addOption(uint256 index, bytes32 option){
-    require(owner == msg.sender && !activated);
+  function addOption(uint256 index, bytes32 option) building onlyOwner {
     decisions[index].options.push(option);
     decisions[index].tally.push(0);
   }
