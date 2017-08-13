@@ -1,5 +1,6 @@
-pragma solidity ^0.4.4;
+pragma solidity ^0.4.11;
 
+import './Votecoin.sol';
 import 'zeppelin-solidity/contracts/ownership/Ownable.sol';
 
 contract Ballot is Ownable {
@@ -16,6 +17,9 @@ contract Ballot is Ownable {
   bytes32[] decisionNames;
   bool public open = false;
 
+  //TODO: hardcode deployed votecoin
+  Votecoin votecoin;
+
   mapping (address => bool) public voted;
   mapping (address => bool) public voters;
 
@@ -27,6 +31,19 @@ contract Ballot is Ownable {
 
   struct Option {
     bytes32 name;
+  }
+
+  modifier votecoinAddressSet() {
+    require(address(0) != address(votecoin));
+    _;
+  }
+
+  //TODO: just for testing
+  //TODO: DANGER DANGER - DO NOT GO LIVE WITH THIS IMPLEMENTED, VC ADDRESS MUST BE HARDCODED
+  //TODO: If this is implemented, any ballot owner can just print their own votecoin and use it
+  //TODO: did I mention DANGER?
+  function setVotecoin(address v) onlyOwner {
+    votecoin = Votecoin(v);
   }
 
   function getOptionResults(uint256 d, uint256 o) constant returns (uint res){
@@ -50,12 +67,24 @@ contract Ballot is Ownable {
 
   function castVote(uint[] selections) voting canVote {
     require(selections.length == decisions.length);
+    purchaseVote();
     uint256 s = 0;
     for (uint d = 0; d < decisions.length; d++) {
       decisions[d].tally[selections[s]]++;
       s++;
     }
     voted[msg.sender] = true;
+  }
+
+  //TODO: implement this
+  function getRate() internal constant returns (uint256) {
+    return 100;
+  }
+
+  function purchaseVote() internal voting {
+    uint256 r = getRate();
+    require(votecoin.allowance(owner, address(this)) >= r);
+    votecoin.transferFrom(owner, votecoin.owner(), r);
   }
 
   function addVoter(address voter) building onlyOwner {
@@ -95,15 +124,7 @@ contract Ballot is Ownable {
     delete decisionNames;
   }
 
-  function addCoin(){
-
-  }
-
-  function removeCoin(){
-
-  }
-
-  function activate() building onlyOwner {
+  function activate() building onlyOwner votecoinAddressSet {
     stage = Stages.Voting;
   }
 

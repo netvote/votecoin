@@ -23,6 +23,7 @@ contract TestBallot {
     }
 
     function testCastVote(){
+
         //create ballot with 2 decisions
         Ballot b = new Ballot();
         b.addDecision("President 2020");
@@ -32,6 +33,15 @@ contract TestBallot {
         //add owner as voter
         b.addVoter(b.owner());
 
+
+        //allow ballot to transact votecoin for voter
+        Votecoin v = new Votecoin();
+        b.setVotecoin(v);
+        v.mint(b.owner(), 100); //enough for a vote
+        v.approve(address(b), 100);
+
+        Assert.equal(v.allowance(b.owner(), address(b)), 100, "Allowance should be 100");
+
         //activate election
         b.activate();
 
@@ -39,6 +49,8 @@ contract TestBallot {
         var votes = new uint[](1);
         votes[0] = uint(1);
         b.castVote(votes);
+
+        Assert.equal(v.allowance(b.owner(), address(b)), 0, "Allowance should be 0");
 
         uint256 notVotedOptionCount = 0;
         Assert.equal(b.getOptionResults(0, 0), notVotedOptionCount, "Results should be 0");
@@ -62,6 +74,14 @@ contract TestBallot {
 
         //add owner as voter
         b.addVoter(b.owner());
+
+        //allow ballot to transact votecoin for voter
+        Votecoin v = new Votecoin();
+        b.setVotecoin(v);
+        v.mint(b.owner(), 100); //enough for a vote
+        v.approve(address(b), 100);
+
+        Assert.equal(v.allowance(b.owner(), address(b)), 100, "Allowance should be 100");
 
         //activate election
         b.activate();
@@ -88,6 +108,14 @@ contract TestBallot {
         b.addOption(0, "perot");
 
         b.setOpen(true);
+
+        //allow ballot to transact votecoin for voter
+        Votecoin v = new Votecoin();
+        b.setVotecoin(v);
+        v.mint(b.owner(), 100); //enough for a vote
+        v.approve(address(b), 100);
+
+        Assert.equal(v.allowance(b.owner(), address(b)), 100, "Allowance should be 100");
 
         //activate election
         b.activate();
