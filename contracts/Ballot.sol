@@ -14,6 +14,7 @@ contract Ballot is Ownable {
   Stages public stage = Stages.Building;
   Decision[] decisions;
   bytes32[] decisionNames;
+  bool public open = false;
 
   mapping (address => bool) public voted;
   mapping (address => bool) public voters;
@@ -42,8 +43,13 @@ contract Ballot is Ownable {
     _;
   }
 
-  function castVote(uint[] selections) voting {
-    require(voters[msg.sender] && !voted[msg.sender] && selections.length == decisions.length);
+  modifier canVote() {
+    require((open || voters[msg.sender]) && !voted[msg.sender]);
+    _;
+  }
+
+  function castVote(uint[] selections) voting canVote {
+    require(selections.length == decisions.length);
     uint256 s = 0;
     for (uint d = 0; d < decisions.length; d++) {
       decisions[d].tally[selections[s]]++;
@@ -80,9 +86,21 @@ contract Ballot is Ownable {
     name = decisions[index].name;
   }
 
+  function setOpen(bool o) building onlyOwner {
+    open = o;
+  }
+
   function reset() building onlyOwner {
     delete decisions;
     delete decisionNames;
+  }
+
+  function addCoin(){
+
+  }
+
+  function removeCoin(){
+
   }
 
   function activate() building onlyOwner {

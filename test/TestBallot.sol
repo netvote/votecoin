@@ -80,4 +80,30 @@ contract TestBallot {
         b.close();
     }
 
+    function testOpenBallotCastVote(){
+        //create ballot with 2 decisions
+        Ballot b = new Ballot();
+        b.addDecision("President 2020");
+        b.addOption(0, "trump");
+        b.addOption(0, "perot");
+
+        b.setOpen(true);
+
+        //activate election
+        b.activate();
+
+        // vote for perot (index = 1)
+        var votes = new uint[](1);
+        votes[0] = uint(1);
+        b.castVote(votes);
+
+        uint256 notVotedOptionCount = 0;
+        Assert.equal(b.getOptionResults(0, 0), notVotedOptionCount, "Results should be 0");
+
+        uint256 votedOptionCount = 1;
+        Assert.equal(b.getOptionResults(0, 1), votedOptionCount, "Results should be 1");
+
+        b.close();
+    }
+
 }
