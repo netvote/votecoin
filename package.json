@@ -1,0 +1,26 @@
+{
+  "name": "votecoin",
+  "version": "1.0.0",
+  "description": "This repo contains solidity contracts supporting the netvote platform",
+  "main": "truffle.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "zeppelin-solidity": "^1.2.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/netvote/votecoin.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/netvote/votecoin/issues"
+  },
+  "homepage": "https://github.com/netvote/votecoin#readme"
+}
