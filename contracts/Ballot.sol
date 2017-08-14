@@ -5,6 +5,8 @@ import 'zeppelin-solidity/contracts/ownership/Ownable.sol';
 
 contract Ballot is Ownable {
 
+  event Vote(address voter, address owner, address ballot);
+
   enum Stages {
     Building,
     Voting,
@@ -33,6 +35,8 @@ contract Ballot is Ownable {
     bytes32 name;
   }
 
+
+  //TODO: will not be needed eventually
   modifier votecoinAddressSet() {
     require(address(0) != address(votecoin));
     _;
@@ -68,12 +72,11 @@ contract Ballot is Ownable {
   function castVote(uint[] selections) voting canVote {
     require(selections.length == decisions.length);
     purchaseVote();
-    uint256 s = 0;
     for (uint d = 0; d < decisions.length; d++) {
-      decisions[d].tally[selections[s]]++;
-      s++;
+      decisions[d].tally[selections[d]]++;
     }
     voted[msg.sender] = true;
+    Vote(msg.sender, owner, this);
   }
 
   //TODO: implement this
@@ -81,9 +84,9 @@ contract Ballot is Ownable {
     return 100;
   }
 
-  function purchaseVote() internal voting {
+  function purchaseVote() internal {
     uint256 r = getRate();
-    require(votecoin.allowance(owner, address(this)) >= r);
+    require(votecoin.allowance(owner, this) >= r);
     votecoin.transferFrom(owner, votecoin.owner(), r);
   }
 
