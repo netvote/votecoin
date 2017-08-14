@@ -24,7 +24,7 @@ VotecoinCappedCrowdsale.deployed().then(inst => { crowdsale = inst })
 crowdsale.token().then(addr => { tokenAddress = addr } )
 voteCoinInstance = Votecoin.at(tokenAddress)
 voteCoinInstance.balanceOf(account1).then(balance => balance.toString(10))
-VotecoinCappedCrowdsale.deployed().then(inst => inst.sendTransaction({ from: account1, value: web3.toWei(0.025, "ether")}))
+crowdsale.sendTransaction({ from: account1, value: web3.toWei(0.025, "ether")})
 voteCoinInstance.balanceOf(account1).then(balance => balance.toString(10))
 
 
