@@ -46,7 +46,7 @@ contract Ballot is Ownable {
   //TODO: DANGER DANGER - DO NOT GO LIVE WITH THIS IMPLEMENTED, VC ADDRESS MUST BE HARDCODED
   //TODO: If this is implemented, any ballot owner can just print their own votecoin and use it
   //TODO: did I mention DANGER?
-  function setVotecoin(address v) onlyOwner {
+  function setVotecoin(address v) building onlyOwner {
     votecoin = Votecoin(v);
   }
 
