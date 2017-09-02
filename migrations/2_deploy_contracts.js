@@ -1,8 +1,8 @@
-var Ballot = artifacts.require("./Ballot.sol");
+var Election = artifacts.require("./Election.sol");
 var VotecoinCappedCrowdsale = artifacts.require("./VotecoinCappedCrowdsale.sol");
 
 module.exports = function(deployer) {
-  deployer.deploy(Ballot);
+  deployer.deploy(Election);
 
   const startBlock = web3.eth.blockNumber + 2;
   const endBlock = startBlock + 300;

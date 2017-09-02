@@ -3,9 +3,7 @@ pragma solidity ^0.4.11;
 import './Votecoin.sol';
 import 'zeppelin-solidity/contracts/ownership/Ownable.sol';
 
-contract Ballot is Ownable {
-
-  event Vote(address voter, address owner, address ballot);
+contract Election is Ownable {
 
   enum Stages {
     Building,
@@ -76,7 +74,6 @@ contract Ballot is Ownable {
       decisions[d].tally[selections[d]]++;
     }
     voted[msg.sender] = true;
-    Vote(msg.sender, owner, this);
   }
 
   //TODO: implement this

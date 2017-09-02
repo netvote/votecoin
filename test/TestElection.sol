@@ -2,19 +2,19 @@ pragma solidity ^0.4.2;
 
 import "truffle/Assert.sol";
 import "truffle/DeployedAddresses.sol";
-import "../contracts/Ballot.sol";
+import "../contracts/Election.sol";
 
-contract TestBallot {
+contract TestElection {
 
     function testInitialization() {
-        Ballot b = Ballot(DeployedAddresses.Ballot());
+        Election b = Election(DeployedAddresses.Election());
 
         uint256 expected = 0;
         Assert.equal(b.getDecisionCount(), expected, "Creation should initialize to 0");
     }
 
     function testAddDecision() {
-        Ballot b = new Ballot();
+        Election b = new Election();
 
         b.addDecision("President 2020");
 
@@ -25,7 +25,7 @@ contract TestBallot {
     function testCastVote(){
 
         //create ballot with 2 decisions
-        Ballot b = new Ballot();
+        Election b = new Election();
         b.addDecision("President 2020");
         b.addOption(0, "trump");
         b.addOption(0, "perot");
@@ -63,7 +63,7 @@ contract TestBallot {
 
     function testCastMultiDecisionVote(){
         //create ballot with 2 decisions
-        Ballot b = new Ballot();
+        Election b = new Election();
         b.addDecision("President 2020");
         b.addOption(0, "trump");
         b.addOption(0, "perot");
@@ -102,7 +102,7 @@ contract TestBallot {
 
     function testOpenBallotCastVote(){
         //create ballot with 2 decisions
-        Ballot b = new Ballot();
+        Election b = new Election();
         b.addDecision("President 2020");
         b.addOption(0, "trump");
         b.addOption(0, "perot");
