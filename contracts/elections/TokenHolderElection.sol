@@ -19,7 +19,6 @@ contract TokenHolderElection is Election {
 
     function castVote(uint[] selections) hasBalance {
         super.castVote(selections);
-        voted[msg.sender] = true;
     }
 
 }
