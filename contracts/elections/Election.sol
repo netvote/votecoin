@@ -1,6 +1,6 @@
 pragma solidity ^0.4.11;
 
-import './Votecoin.sol';
+import '../Votecoin.sol';
 import 'zeppelin-solidity/contracts/ownership/Ownable.sol';
 
 contract Election is Ownable {
@@ -15,13 +15,11 @@ contract Election is Ownable {
   Stages public stage = Stages.Building;
   Decision[] decisions;
   bytes32[] decisionNames;
-  bool public open = false;
 
   //TODO: hardcode deployed votecoin
   Votecoin votecoin;
 
   mapping (address => bool) public voted;
-  mapping (address => bool) public voters;
 
   struct Decision {
     bytes32 name;
@@ -32,7 +30,6 @@ contract Election is Ownable {
   struct Option {
     bytes32 name;
   }
-
 
   //TODO: will not be needed eventually
   modifier votecoinAddressSet() {
@@ -62,12 +59,12 @@ contract Election is Ownable {
     _;
   }
 
-  modifier canVote() {
-    require((open || voters[msg.sender]) && !voted[msg.sender]);
+  modifier notVoted() {
+    require(!voted[msg.sender]);
     _;
   }
 
-  function castVote(uint[] selections) voting canVote {
+  function castVote(uint[] selections) voting notVoted {
     require(selections.length == decisions.length);
     purchaseVote();
     for (uint d = 0; d < decisions.length; d++) {
@@ -85,14 +82,6 @@ contract Election is Ownable {
     uint256 r = getRate();
     require(votecoin.allowance(owner, this) >= r);
     votecoin.transferFrom(owner, votecoin.owner(), r);
-  }
-
-  function addVoter(address voter) building onlyOwner {
-    voters[voter] = true;
-  }
-
-  function removeVoter(address voter) building onlyOwner {
-    voters[voter] = false;
   }
 
   function getDecisionCount() constant returns (uint256 l) {
@@ -113,10 +102,6 @@ contract Election is Ownable {
 
   function getDecision(uint256 index) constant returns (bytes32 name){
     name = decisions[index].name;
-  }
-
-  function setOpen(bool o) building onlyOwner {
-    open = o;
   }
 
   function reset() building onlyOwner {

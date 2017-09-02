@@ -2,32 +2,21 @@ pragma solidity ^0.4.2;
 
 import "truffle/Assert.sol";
 import "truffle/DeployedAddresses.sol";
-import "../contracts/elections/Election.sol";
+import "../contracts/elections/PrivateElection.sol";
 
-contract TestElection {
-    function testInitialization() {
-        Election b = new Election();
-
-        uint256 expected = 0;
-        Assert.equal(b.getDecisionCount(), expected, "Creation should initialize to 0");
-    }
-
-    function testAddDecision() {
-        Election b = new Election();
-
-        b.addDecision("President 2020");
-
-        uint256 expected = 1;
-        Assert.equal(b.getDecisionCount(), expected, "Creation should add 1 to count");
-    }
+contract TestPrivateElection {
 
     function testCastVote(){
 
         //create ballot with 2 decisions
-        Election b = new Election();
+        PrivateElection b = new PrivateElection();
         b.addDecision("President 2020");
         b.addOption(0, "trump");
         b.addOption(0, "perot");
+
+        //add owner as voter
+        b.addVoter(b.owner());
+
 
         //allow ballot to transact votecoin for voter
         Votecoin v = new Votecoin();
@@ -58,7 +47,7 @@ contract TestElection {
 
     function testCastMultiDecisionVote(){
         //create ballot with 2 decisions
-        Election b = new Election();
+        PrivateElection b = new PrivateElection();
         b.addDecision("President 2020");
         b.addOption(0, "trump");
         b.addOption(0, "perot");
@@ -66,6 +55,9 @@ contract TestElection {
         b.addDecision("Governor 2020");
         b.addOption(1, "Glavine");
         b.addOption(1, "Smoltz");
+
+        //add owner as voter
+        b.addVoter(b.owner());
 
         //allow ballot to transact votecoin for voter
         Votecoin v = new Votecoin();
@@ -91,5 +83,4 @@ contract TestElection {
 
         b.close();
     }
-
 }

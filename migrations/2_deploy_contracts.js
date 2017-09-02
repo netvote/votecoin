@@ -1,4 +1,4 @@
-var Election = artifacts.require("./Election.sol");
+var Election = artifacts.require("./elections/Election.sol");
 var VotecoinCappedCrowdsale = artifacts.require("./VotecoinCappedCrowdsale.sol");
 
 module.exports = function(deployer) {
