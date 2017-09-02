@@ -21,7 +21,6 @@ contract PrivateElection is Election {
 
     function castVote(uint[] selections) inVoterList {
         super.castVote(selections);
-        voted[msg.sender] = true;
     }
 
 }
