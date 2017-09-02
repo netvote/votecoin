@@ -49,6 +49,10 @@ contract Election is Ownable {
     res = decisions[d].tally[o];
   }
 
+  function getVoteIncrement() constant returns (uint res){
+    res = 1;
+  }
+
   modifier building() {
     require(stage == Stages.Building);
     _;
@@ -68,7 +72,7 @@ contract Election is Ownable {
     require(selections.length == decisions.length);
     purchaseVote();
     for (uint d = 0; d < decisions.length; d++) {
-      decisions[d].tally[selections[d]]++;
+      decisions[d].tally[selections[d]] += getVoteIncrement();
     }
     voted[msg.sender] = true;
   }
