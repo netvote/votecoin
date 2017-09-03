@@ -17,7 +17,7 @@ contract Election is Ownable {
   bytes32[] decisionNames;
 
   //TODO: hardcode deployed votecoin
-  Votecoin votecoin;
+  Votecoin public votecoin;
   uint256 votesPerVotecoin;
 
   mapping (address => bool) public voted;
@@ -69,6 +69,11 @@ contract Election is Ownable {
     _;
   }
 
+  modifier hasEnoughCoin() {
+    require(votecoin.balanceOf(this) >= votesPerVotecoin);
+    _;
+  }
+
   function castVote(uint[] selections) voting notVoted {
     require(selections.length == decisions.length);
     purchaseVote();
@@ -78,9 +83,8 @@ contract Election is Ownable {
     voted[msg.sender] = true;
   }
 
-  function purchaseVote() internal {
-    require(votecoin.allowance(owner, this) >= votesPerVotecoin);
-    votecoin.transferFrom(owner, votecoin.owner(), votesPerVotecoin);
+  function purchaseVote() internal hasEnoughCoin {
+    votecoin.transfer(votecoin.owner(), votesPerVotecoin);
   }
 
   function getDecisionCount() constant returns (uint256 l) {
