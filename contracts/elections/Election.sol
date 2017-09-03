@@ -18,6 +18,7 @@ contract Election is Ownable {
 
   //TODO: hardcode deployed votecoin
   Votecoin votecoin;
+  uint256 votesPerVotecoin;
 
   mapping (address => bool) public voted;
 
@@ -77,15 +78,9 @@ contract Election is Ownable {
     voted[msg.sender] = true;
   }
 
-  //TODO: implement this
-  function getRate() internal constant returns (uint256) {
-    return 100;
-  }
-
   function purchaseVote() internal {
-    uint256 r = getRate();
-    require(votecoin.allowance(owner, this) >= r);
-    votecoin.transferFrom(owner, votecoin.owner(), r);
+    require(votecoin.allowance(owner, this) >= votesPerVotecoin);
+    votecoin.transferFrom(owner, votecoin.owner(), votesPerVotecoin);
   }
 
   function getDecisionCount() constant returns (uint256 l) {
@@ -114,6 +109,7 @@ contract Election is Ownable {
   }
 
   function activate() building onlyOwner votecoinAddressSet {
+    votesPerVotecoin = votecoin.voteRate();
     stage = Stages.Voting;
   }
 
