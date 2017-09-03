@@ -7,8 +7,8 @@ contract BaseElectionTest {
 
     function addDecisions(Election e){
         e.addDecision("President 2020");
-        e.addOption(0, "trump");
-        e.addOption(0, "perot");
+        e.addOption(0, "Trump");
+        e.addOption(0, "Perot");
         e.addDecision("Governor 2020");
         e.addOption(1, "Glavine");
         e.addOption(1, "Smoltz");
