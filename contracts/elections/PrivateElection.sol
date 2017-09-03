@@ -11,12 +11,17 @@ contract PrivateElection is Election {
         _;
     }
 
-    function addVoter(address voter) building onlyOwner {
+    function addVoter(address voter) onlyOwner {
         voters[voter] = true;
     }
 
-    function removeVoter(address voter) building onlyOwner {
+    function removeVoter(address voter) onlyOwner {
         voters[voter] = false;
+    }
+
+    function updateVoterAddress(address from, address to) onlyOwner {
+        voters[to] = voters[from];
+        voters[from] = false;
     }
 
     function castVote(uint[] selections) inVoterList {
