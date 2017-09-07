@@ -13,11 +13,11 @@ contract RegisterableElection is PrivateElection {
         voters[msg.sender] = true;
     }
 
-    function addPin(bytes32 pinHash) {
+    function addPin(bytes32 pinHash) onlyOwner {
         pinHashes[pinHash] = true;
     }
 
-    function removePin(bytes32 pinHash){
+    function removePin(bytes32 pinHash) onlyOwner {
         pinHashes[pinHash] = false;
     }
 }
