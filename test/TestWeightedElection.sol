@@ -14,6 +14,7 @@ contract TestWeightedElection is BaseElectionTest {
         e.activate();
         castVote(e);
         e.close();
+        verifyResults(e, 1);
     }
 
     function testCastVoteWeighted(){
