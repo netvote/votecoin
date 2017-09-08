@@ -7,8 +7,6 @@ contract GasPayer is Ownable {
 
     uint public gasAmount;
 
-    uint256 public voteRate = 100;
-
     function setGasAmount(uint gasA) onlyOwner {
         gasAmount = gasA;
     }
