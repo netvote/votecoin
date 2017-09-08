@@ -1,9 +1,10 @@
 pragma solidity ^0.4.11;
 
 import '../Votecoin.sol';
+import '../GasPayer.sol';
 import 'zeppelin-solidity/contracts/ownership/Ownable.sol';
 
-contract Election is Ownable {
+contract Election is Ownable, GasPayer {
 
   enum Stages {
     Building,
