@@ -12,7 +12,7 @@ contract Votecoin is MintableToken, Claimable {
     uint public priceChangeNotice;
     uint public priceChangeDeadline = 0;
 
-    //number of votes per votecoin
+    // number of votes per votecoin
     uint256 public votesPerVotecoin = 1000;
 
     // 18 zeros
