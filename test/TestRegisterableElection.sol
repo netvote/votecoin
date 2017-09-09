@@ -9,8 +9,7 @@ contract TestRegisterableElection is BaseElectionTest {
     function testRegisterElection(){
         RegisterableElection e = new RegisterableElection();
         addDecisions(e);
-        addCoin(e, 100);
-        setVoteRate(e, 100);
+        setCheap(e);
 
         var hsh = sha256("fakepin");
         e.addPin(hsh);

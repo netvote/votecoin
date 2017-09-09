@@ -9,8 +9,7 @@ contract TestWeightedRegisterableElection is BaseElectionTest {
     function testCastVoteDefault(){
         WeightedRegisterableElection e = new WeightedRegisterableElection();
         addDecisions(e);
-        addCoin(e, 100);
-        setVoteRate(e, 100);
+        setCheap(e);
 
         var hsh = sha256("fakepin");
         e.addPin(hsh);
@@ -25,8 +24,7 @@ contract TestWeightedRegisterableElection is BaseElectionTest {
     function testCastVoteMultiple(){
         WeightedRegisterableElection e = new WeightedRegisterableElection();
         addDecisions(e);
-        addCoin(e, 100);
-        setVoteRate(e, 100);
+        setCheap(e);
 
         var hsh = sha256("fakepin");
         e.addPin(hsh);

@@ -9,8 +9,7 @@ contract TestWeightedElection is BaseElectionTest {
     function testCastVoteDefault(){
         WeightedElection e = new WeightedElection();
         addDecisions(e);
-        addCoin(e, 100);
-        setVoteRate(e, 100);
+        setCheap(e);
         e.activate();
         castVote(e);
         e.close();
@@ -21,8 +20,7 @@ contract TestWeightedElection is BaseElectionTest {
         WeightedElection e = new WeightedElection();
         e.setWeight(e.owner(), 2);
         addDecisions(e);
-        addCoin(e, 100);
-        setVoteRate(e, 100);
+        setCheap(e);
         e.activate();
         castVote(e);
         e.close();

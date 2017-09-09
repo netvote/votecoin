@@ -14,14 +14,25 @@ contract BaseElectionTest {
         e.addOption(1, "Smoltz");
     }
 
-    function setVoteRate(Election e, uint256 rate){
+    function setCheap(Election e){
+        addCoin(e, 100000000000000000);
+        setVotesPerVotecoin(e, 10);
+    }
+
+    function setExpensive(Election e){
+        addCoin(e, 1000000000000000000);
+        setVotesPerVotecoin(e, 1);
+    }
+
+    function setVotesPerVotecoin(Election e, uint256 rate){
         Votecoin vc = e.votecoin();
-        vc.setVoteRate(rate);
+        vc.setPendingVotesPerVotecoin(rate);
+        vc.updateVotesPerVotecoin();
     }
 
     function addCoin(Election e, uint256 cost){
         //allow ballot to transact votecoin for voter
-        Votecoin v = new Votecoin();
+        Votecoin v = new Votecoin(0 seconds);
         e.setVotecoin(v);
         v.mint(e.owner(), cost); //enough for a vote
         v.transfer(address(e), cost);

@@ -10,8 +10,7 @@ contract TestWeightedPrivateElection is BaseElectionTest {
         WeightedPrivateElection e = new WeightedPrivateElection();
         e.addVoter(e.owner());
         addDecisions(e);
-        addCoin(e, 100);
-        setVoteRate(e, 100);
+        setCheap(e);
         e.activate();
         castVote(e);
         e.close();
@@ -23,8 +22,7 @@ contract TestWeightedPrivateElection is BaseElectionTest {
         e.addVoter(e.owner());
         e.setWeight(e.owner(), 2);
         addDecisions(e);
-        addCoin(e, 100);
-        setVoteRate(e, 100);
+        setCheap(e);
         e.activate();
         castVote(e);
         e.close();

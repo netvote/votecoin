@@ -22,8 +22,7 @@ contract TestPrivateElection is BaseElectionTest {
         PrivateElection e = new PrivateElection();
         e.addVoter(e.owner());
         addDecisions(e);
-        addCoin(e, 100);
-        setVoteRate(e, 100);
+        setCheap(e);
         e.activate();
         castVote(e);
         e.close();

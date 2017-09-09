@@ -16,8 +16,7 @@ contract TestTokenHolderElection is BaseElectionTest {
         token.mint(e.owner(), 1);
 
         addDecisions(e);
-        addCoin(e, 100);
-        setVoteRate(e, 100);
+        setCheap(e);
         e.activate();
         castVote(e);
         e.close();

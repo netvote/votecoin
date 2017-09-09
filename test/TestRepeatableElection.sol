@@ -9,8 +9,7 @@ contract TestRepeatableElection is BaseElectionTest {
     function testSingleRepeatableVote(){
         RepeatableElection e = new RepeatableElection(1);
         addDecisions(e);
-        addCoin(e, 100);
-        setVoteRate(e, 100);
+        setCheap(e);
         e.activate();
         castVote(e);
         e.close();
@@ -21,8 +20,8 @@ contract TestRepeatableElection is BaseElectionTest {
     function testMultipleRepeatableVote(){
         RepeatableElection e = new RepeatableElection(0);
         addDecisions(e);
-        addCoin(e, 200);
-        setVoteRate(e, 100);
+        addCoin(e, 1000000000000000000);
+        setVotesPerVotecoin(e, 2);
         e.activate();
         castVote(e);
         castVote(e);

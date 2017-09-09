@@ -15,8 +15,7 @@ contract TestElection is BaseElectionTest {
     function testCastVote(){
         Election e = new Election();
         addDecisions(e);
-        addCoin(e, 100);
-        setVoteRate(e, 100);
+        setCheap(e);
         e.activate();
         castVote(e);
         e.close();
@@ -26,8 +25,7 @@ contract TestElection is BaseElectionTest {
     function testCastVoteChangePrice(){
         Election e = new Election();
         addDecisions(e);
-        addCoin(e, 200);
-        setVoteRate(e, 200);
+        setExpensive(e);
         e.activate();
         castVote(e);
         e.close();

@@ -19,7 +19,7 @@ contract Election is Ownable, GasPayer {
 
   //TODO: hardcode deployed votecoin
   Votecoin public votecoin;
-  uint256 votesPerVotecoin;
+  uint256 votecoinPerVote;
 
   mapping (address => bool) public voted;
 
@@ -71,7 +71,7 @@ contract Election is Ownable, GasPayer {
   }
 
   modifier hasEnoughCoin() {
-    require(votecoin.balanceOf(this) >= votesPerVotecoin);
+    require(votecoin.balanceOf(this) >= votecoinPerVote);
     _;
   }
 
@@ -85,7 +85,7 @@ contract Election is Ownable, GasPayer {
   }
 
   function purchaseVote() internal hasEnoughCoin {
-    votecoin.transfer(votecoin.owner(), votesPerVotecoin);
+    votecoin.transfer(votecoin.owner(), votecoinPerVote);
   }
 
   function getDecisionCount() constant returns (uint256 l) {
@@ -114,7 +114,7 @@ contract Election is Ownable, GasPayer {
   }
 
   function activate() building onlyOwner votecoinAddressSet {
-    votesPerVotecoin = votecoin.voteRate();
+    votecoinPerVote = votecoin.votecoinPerVote();
     stage = Stages.Voting;
   }
 
