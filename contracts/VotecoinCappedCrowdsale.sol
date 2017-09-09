@@ -10,6 +10,6 @@ contract VotecoinCappedCrowdsale is CappedCrowdsale {
     }
 
     function createTokenContract() internal returns (MintableToken) {
-        return new Votecoin();
+        return new Votecoin(0 seconds);
     }
 }
