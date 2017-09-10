@@ -1,18 +1,17 @@
 var Election = artifacts.require("./elections/Election.sol");
-var VotecoinCappedCrowdsale = artifacts.require("./VotecoinCappedCrowdsale.sol");
+var VotecoinCrowdsale = artifacts.require("./VotecoinCrowdsale.sol");
 
 module.exports = function(deployer) {
   deployer.deploy(Election);
 
   const startBlock = web3.eth.blockNumber + 2;
-  const endBlock = startBlock + 300;
-  const rate = 40;
+  const endBlock = startBlock + 300000;
+  const rate = 10;
   const wallet = web3.eth.accounts[0];
+  const totalSupply = 10000000;
+  const weiCap = web3.toWei(0.1, "ether") * totalSupply;
 
-  const totalSupply = 20000000;
-  const weiCap = web3.toWei(0.025, "ether") * totalSupply;
-
-  deployer.deploy(VotecoinCappedCrowdsale, startBlock, endBlock, rate, wallet, weiCap);
+  deployer.deploy(VotecoinCrowdsale, startBlock, endBlock, rate, wallet, weiCap);
 };
 
 /*
