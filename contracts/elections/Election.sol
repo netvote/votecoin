@@ -12,10 +12,11 @@ contract Election is Ownable, GasPayer {
     Closed
   }
 
+  bytes32 ipfsReference;
+
   // This is the current stage.
   Stages public stage = Stages.Building;
   Decision[] decisions;
-  bytes32[] decisionNames;
 
   //TODO: hardcode deployed votecoin
   Votecoin public votecoin;
@@ -24,7 +25,6 @@ contract Election is Ownable, GasPayer {
   mapping (address => bool) public voted;
 
   struct Decision {
-    bytes32 name;
     bytes32[] options;
     uint[] tally;
   }
@@ -51,6 +51,7 @@ contract Election is Ownable, GasPayer {
     res = decisions[d].tally[o];
   }
 
+  // how many votes to increment when this voter votes?
   function getVoteIncrement() constant returns (uint res){
     res = 1;
   }
@@ -75,42 +76,10 @@ contract Election is Ownable, GasPayer {
     _;
   }
 
-  function castVote(uint[] selections) voting notVoted {
-    require(selections.length == decisions.length);
-    purchaseVote();
-    for (uint d = 0; d < decisions.length; d++) {
-      decisions[d].tally[selections[d]] += getVoteIncrement();
-    }
-    voted[msg.sender] = true;
-  }
+  // ADMIN ACTIONS
 
   function purchaseVote() internal hasEnoughCoin {
     votecoin.transfer(votecoin.owner(), votecoinPerVote);
-  }
-
-  function getDecisionCount() constant returns (uint256 l) {
-    l = decisions.length;
-  }
-
-  function getOptionsCount(uint256 decIndex) constant returns (uint256 l){
-    l = decisions[decIndex].options.length;
-  }
-
-  function getDecisions() constant returns (bytes32[] d){
-    d = decisionNames;
-  }
-
-  function getOptions(uint256 index) constant returns(bytes32[] o){
-    o = decisions[index].options;
-  }
-
-  function getDecision(uint256 index) constant returns (bytes32 name){
-    name = decisions[index].name;
-  }
-
-  function reset() building onlyOwner {
-    delete decisions;
-    delete decisionNames;
   }
 
   function activate() building onlyOwner votecoinAddressSet {
@@ -118,28 +87,34 @@ contract Election is Ownable, GasPayer {
     stage = Stages.Voting;
   }
 
+  // permanently end election
   function close() onlyOwner {
     stage = Stages.Closed;
   }
 
-  function getOption(uint256 decIndex, uint256 optIndex) constant returns (bytes32 name){
-    name = decisions[decIndex].options[optIndex];
+  function addDecisions(bytes32 ipfsJsonReference, uint[] optionCounts) building onlyOwner {
+    ipfsReference = ipfsJsonReference;
+    for (uint256 i = 0; i < optionCounts.length; i++) {
+      decisions.push(Decision({
+        options: new bytes32[](optionCounts[i]),
+        tally: new uint[](optionCounts[i])
+      }));
+    }
   }
 
-  function addDecision(bytes32 name) building onlyOwner {
+  // VOTER ACTIONS
 
-    decisions.push(Decision({
-        name: name,
-        options: new bytes32[](0),
-        tally: new uint[](0)
-    }));
-
-    decisionNames.push(name);
+  function getIPFSReference() constant returns (bytes32 ipfsReference) {
+    return ipfsReference;
   }
 
-  function addOption(uint256 index, bytes32 option) building onlyOwner {
-    decisions[index].options.push(option);
-    decisions[index].tally.push(0);
+  function castVote(uint[] selections) voting notVoted {
+    require(selections.length == decisions.length);
+    purchaseVote();
+    for (uint d = 0; d < decisions.length; d++) {
+      decisions[d].tally[selections[d]] += getVoteIncrement();
+    }
+    voted[msg.sender] = true;
   }
 
 }

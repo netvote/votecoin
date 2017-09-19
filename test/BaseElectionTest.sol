@@ -6,12 +6,11 @@ import "../contracts/elections/Election.sol";
 contract BaseElectionTest {
 
     function addDecisions(Election e){
-        e.addDecision("President 2020");
-        e.addOption(0, "Trump");
-        e.addOption(0, "Perot");
-        e.addDecision("Governor 2020");
-        e.addOption(1, "Glavine");
-        e.addOption(1, "Smoltz");
+        var optionsCounts = new uint[](2);
+        optionsCounts[0] = uint(2);
+        optionsCounts[1] = uint(2);
+
+        e.addDecisions("0xabc123123123123123123", optionsCounts);
     }
 
     function setCheap(Election e){
