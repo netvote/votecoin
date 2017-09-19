@@ -10,7 +10,7 @@ contract BaseElectionTest {
         optionsCounts[0] = uint(2);
         optionsCounts[1] = uint(2);
 
-        e.addDecisions("0xabc123123123123123123", optionsCounts);
+        e.setDecisions("0xabc123123123123123123", optionsCounts);
     }
 
     function setCheap(Election e){

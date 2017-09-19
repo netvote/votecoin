@@ -15,21 +15,7 @@ let clean = function(txt) {
 };
 
 let addDecisions = function(election, admin) {
-  return election.addDecision('What is your favorite color?', {from: admin}).then(()=>{
-      return election.addDecision('What is the speed of a swallow?', {from: admin})
-  }).then(()=>{
-      return election.addOption(0, "red", {from: admin})
-  }).then(()=>{
-      return election.addOption(0, "blue", {from: admin})
-  }).then(()=>{
-      return election.addOption(1, "60mph", {from: admin})
-  }).then(()=>{
-      return election.addOption(1, "african or european?", {from: admin})
-  }).then(()=>{
-      return election.getOption(0,0)
-  }).then((o)=>{
-      assert.equal(clean(o), "red", "First decision option should be 'red'")
-  })
+  return election.setDecisions("0x123123123123123", [2,2], {from: admin});
 };
 
 contract('Election', (accounts)=>{

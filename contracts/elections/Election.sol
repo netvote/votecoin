@@ -92,8 +92,9 @@ contract Election is Ownable, GasPayer {
     stage = Stages.Closed;
   }
 
-  function addDecisions(bytes32 ipfsJsonReference, uint[] optionCounts) building onlyOwner {
+  function setDecisions(bytes32 ipfsJsonReference, uint[] optionCounts) building onlyOwner {
     ipfsReference = ipfsJsonReference;
+    delete decisions;
     for (uint256 i = 0; i < optionCounts.length; i++) {
       decisions.push(Decision({
         options: new bytes32[](optionCounts[i]),
