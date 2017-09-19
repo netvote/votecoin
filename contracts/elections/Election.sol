@@ -25,7 +25,6 @@ contract Election is Ownable, GasPayer {
   mapping (address => bool) public voted;
 
   struct Decision {
-    bytes32[] options;
     uint[] tally;
   }
 
@@ -97,7 +96,6 @@ contract Election is Ownable, GasPayer {
     delete decisions;
     for (uint256 i = 0; i < optionCounts.length; i++) {
       decisions.push(Decision({
-        options: new bytes32[](optionCounts[i]),
         tally: new uint[](optionCounts[i])
       }));
     }
@@ -105,7 +103,7 @@ contract Election is Ownable, GasPayer {
 
   // VOTER ACTIONS
 
-  function getIPFSReference() constant returns (bytes32 ipfsReference) {
+  function getIPFSReference() constant returns (bytes32 ipRef) {
     return ipfsReference;
   }
 

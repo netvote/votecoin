@@ -102,6 +102,12 @@ contract('Election', (accounts)=>{
             return voteCoin.balanceOf(election.address)
         }).then((bal)=> {
             assert.equal(balanceToCoin(bal), .999, "election should have .9 votecoin")
+        }).then(() => {
+            return election.close({from: admin})
+        }).then(()=>{
+            return election.stage()
+        }).then((stage) => {
+            assert.equal(stage.c[0], 2, "election should be closed")
         });
     });
 });
