@@ -75,12 +75,20 @@ contract Election is Ownable, GasPayer {
     _;
   }
 
-  // ADMIN ACTIONS
-
-  function purchaseVote() internal hasEnoughCoin {
-    votecoin.transfer(votecoin.owner(), votecoinPerVote);
+  function currentPrice() internal returns (uint) {
+    var latestVotecoinPerVote = votecoin.votecoinPerVote();
+    if (latestVotecoinPerVote < votecoinPerVote) {
+      return votecoinPerVote;
+    } else {
+      return latestVotecoinPerVote;
+    }
   }
 
+  function purchaseVote() internal hasEnoughCoin {
+    votecoin.transfer(votecoin.owner(), currentPrice());
+  }
+
+  // ADMIN ACTIONS
   function activate() building onlyOwner votecoinAddressSet {
     votecoinPerVote = votecoin.votecoinPerVote();
     stage = Stages.Voting;
