@@ -32,4 +32,22 @@ contract TestElection is BaseElectionTest {
         verifyResults(e, 1);
     }
 
+    function testLowerPriceDuringElection(){
+        Election e = new Election();
+        addDecisions(e);
+
+        // start with expensive
+        addCoin(e, 100000000000000000);
+        setVotesPerVotecoin(e, 1);
+
+        e.activate();
+
+        // lower price
+        setVotesPerVotecoin(e, 10);
+
+        castVote(e);
+        e.close();
+        verifyResults(e, 1);
+    }
+
 }
