@@ -11,6 +11,10 @@ contract PrivateElection is Election {
         _;
     }
 
+    function isVoter() constant returns (bool) {
+        return voters[msg.sender];
+    }
+
     function addVoter(address voter) onlyOwner {
         voters[voter] = true;
     }

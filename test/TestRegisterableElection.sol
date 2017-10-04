@@ -11,7 +11,7 @@ contract TestRegisterableElection is BaseElectionTest {
         addDecisions(e);
         setCheap(e);
 
-        var hsh = sha256("fakepin");
+        var hsh = sha3("fakepin");
         e.addPin(hsh);
         e.register("fakepin");
 

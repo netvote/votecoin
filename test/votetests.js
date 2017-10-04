@@ -1,4 +1,5 @@
 let Election = artifacts.require("./elections/Election.sol");
+let RegisterableElection = artifacts.require("./elections/RegisterableElection.sol");
 let VotecoinCrowdsale = artifacts.require("./VotecoinCrowdsale.sol");
 let Votecoin = artifacts.require("./Votecoin.sol");
 
@@ -18,6 +19,97 @@ let addDecisions = function(election, admin) {
   return election.setDecisions("0x123123123123123", [2,2], {from: admin});
 };
 
+let initVoteCoin = function(admin){
+    let voteCrowdsale;
+    let voteCoin;
+    return VotecoinCrowdsale.deployed().then((crowdsale)=>{
+        voteCrowdsale = crowdsale;
+        return crowdsale.token()
+    }).then((tokenAddr)=>{
+        voteCoin = Votecoin.at(tokenAddr);
+        return voteCoin.balanceOf(admin);
+    }).then((bal)=>{
+        assert.equal(bal, 0, "account should start with 0 coin");
+        return voteCrowdsale.sendTransaction({ from: admin, value: web3.toWei(1, "ether")});
+    }).then( (result)=>{
+        return voteCoin.balanceOf(admin)
+    }).then((bal)=>{
+        let expected = 10;
+        assert.equal(balanceToCoin(bal), expected, "account should end with "+expected+" coin")
+        return voteCoin;
+    })
+};
+
+let initElection = function(election, admin, voteCoin){
+    return election.setVotecoin(voteCoin.address, {from: admin}).then(()=>{
+        return voteCoin.transfer(election.address, coin(1), {from: admin})
+    }).then(()=> {
+        return election.setGasAmount(1, {from: admin})
+    }).then(()=>{
+        return election.loadGas({ from: admin, value: 100});
+    }).then(()=>{
+        return voteCoin.balanceOf(election.address)
+    }).then((bal)=>{
+        assert.equal(balanceToCoin(bal), 1, "election should have 1 votecoin")
+        return addDecisions(election, admin)
+    }).then(()=>{
+        return election.getOptionResults(0,0)
+    }).then((res)=>{
+        assert.equal(res, 0, "option 0,0 should have 0 votes")
+    }).then(()=>{
+        return election.getOptionResults(0,1)
+    }).then((res)=>{
+        assert.equal(res, 0, "option 0,1 should have 0 votes")
+    }).then(()=>{
+        return election.getOptionResults(1,0)
+    }).then((res)=>{
+        assert.equal(res, 0, "option 1,0 should have 0 votes")
+    }).then(()=>{
+        return election.getOptionResults(1,1)
+    }).then((res)=>{
+        assert.equal(res, 0, "option 1,1 should have 0 votes")
+    })
+};
+
+contract('Registerable Election', (accounts)=> {
+
+    let election;
+    let voteCoin;
+    let admin = accounts[1];
+    let voter = accounts[2];
+
+    // setup account 1 with 10 Votecoin
+    beforeEach(() => {
+        return initVoteCoin(admin).then((votecoin) => {
+            voteCoin = votecoin;
+        }).then(() => {
+            // create and activate election
+            return RegisterableElection.new({from: admin}).then((e) => {
+                election = e;
+                return initElection(e, admin, voteCoin)
+            }).then(() => {
+                return election.activate({from: admin});
+            })
+        })
+    });
+
+    it("register for election",  ()=>{
+        let key = "registration-key";
+        let hashedkey = web3.sha3(key);
+        return election.addPin(hashedkey, {from: admin}).then((res)=>{
+            return election.isVoter({from: voter})
+        }).then((res)=>{
+            assert.equal(res, false, "isVoter should return false (not registered yet)")
+        }).then(()=>{
+            return election.register(key, {from: voter})
+        }).then(()=>{
+            return election.isVoter({from: voter})
+        }).then((res)=>{
+            assert.equal(res, true, "isVoter should return true")
+        });
+    })
+});
+
 contract('Election', (accounts)=>{
 
     let election;
@@ -27,52 +119,15 @@ contract('Election', (accounts)=>{
 
     // setup account 1 with 10 Votecoin
     beforeEach(()=>{
-        let voteCrowdsale;
-        return VotecoinCrowdsale.deployed().then((crowdsale)=>{
-            voteCrowdsale = crowdsale;
-            return crowdsale.token()
-        }).then((tokenAddr)=>{
-            voteCoin = Votecoin.at(tokenAddr);
-            return voteCoin.balanceOf(admin);
-        }).then((bal)=>{
-            assert.equal(bal, 0, "account should start with 0 coin");
-            return voteCrowdsale.sendTransaction({ from: admin, value: web3.toWei(1, "ether")});
-        }).then( (result)=>{
-            return voteCoin.balanceOf(admin)
-        }).then((bal)=>{
-            let expected = 10;
-            assert.equal(balanceToCoin(bal), expected, "account should end with "+expected+" coin")
+        return initVoteCoin(admin).then((votecoin)=>{
+            voteCoin = votecoin;
         }).then(()=>{
             // create and activate election
             return Election.new({from: admin}).then((e)=>{
                 election = e;
-                //TODO: this is something we just do for testing
-                return election.setVotecoin(voteCoin.address, {from: admin})
-            }).then(()=>{
-                return voteCoin.transfer(election.address, coin(1), {from: admin})
-            }).then(()=>{
-                return voteCoin.balanceOf(election.address)
-            }).then((bal)=>{
-                assert.equal(balanceToCoin(bal), 1, "election should have 1 votecoin")
-                return addDecisions(election, admin)
+                return initElection(e, admin, voteCoin)
             }).then(()=>{
                 return election.activate({from: admin});
-            }).then(()=>{
-                return election.getOptionResults(0,0)
-            }).then((res)=>{
-                assert.equal(res, 0, "option 0,0 should have 0 votes")
-            }).then(()=>{
-                return election.getOptionResults(0,1)
-            }).then((res)=>{
-                assert.equal(res, 0, "option 0,1 should have 0 votes")
-            }).then(()=>{
-                return election.getOptionResults(1,0)
-            }).then((res)=>{
-                assert.equal(res, 0, "option 1,0 should have 0 votes")
-            }).then(()=>{
-                return election.getOptionResults(1,1)
-            }).then((res)=>{
-                assert.equal(res, 0, "option 1,1 should have 0 votes")
             })
         })
     });
