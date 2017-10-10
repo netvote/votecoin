@@ -12,7 +12,7 @@ contract Election is Ownable, GasPayer {
     Closed
   }
 
-  bytes32 ipfsReference;
+  string ipfsReference;
 
   // This is the current stage.
   Stages public stage = Stages.Building;
@@ -96,7 +96,7 @@ contract Election is Ownable, GasPayer {
     stage = Stages.Closed;
   }
 
-  function setDecisions(bytes32 ipfsJsonReference, uint[] optionCounts) building onlyOwner {
+  function setDecisions(string ipfsJsonReference, uint[] optionCounts) building onlyOwner {
     ipfsReference = ipfsJsonReference;
     delete decisions;
     for (uint256 i = 0; i < optionCounts.length; i++) {
@@ -108,7 +108,7 @@ contract Election is Ownable, GasPayer {
 
   // VOTER ACTIONS
 
-  function getIPFSReference() constant returns (bytes32 ipRef) {
+  function getIPFSReference() constant returns (string ipRef) {
     return ipfsReference;
   }
 

@@ -8,8 +8,6 @@ import "./BaseElectionTest.sol";
 contract TestElection is BaseElectionTest {
     function testInitialization() {
         Election b = new Election();
-        bytes32 expected = "";
-        Assert.equal(b.getIPFSReference(), expected, "reference should be empty");
     }
 
     function testCastVote(){
