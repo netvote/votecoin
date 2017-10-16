@@ -21,6 +21,7 @@ contract Election is Ownable, GasPayer {
   //TODO: hardcode deployed votecoin
   Votecoin public votecoin;
   uint256 votecoinPerVote;
+  uint256 public voteCount;
 
   mapping (address => bool) public voted;
 
@@ -70,7 +71,7 @@ contract Election is Ownable, GasPayer {
     _;
   }
 
-  function currentPrice() internal returns (uint) {
+  function currentPrice() internal constant returns (uint) {
     var latestVotecoinPerVote = votecoin.votecoinPerVote();
     if (latestVotecoinPerVote < votecoinPerVote) {
       return latestVotecoinPerVote;
@@ -79,10 +80,26 @@ contract Election is Ownable, GasPayer {
     }
   }
 
+  function tierModifier(uint price) internal constant returns (uint) {
+    var p = uint256(price * 1000);
+    if(voteCount < 10000) {
+      // votes 1-9999: 0% off
+      return p / 1000;
+    } else if (voteCount < 100000) {
+      // votes 10000-999999: 50% off
+      return p / 2 / 1000;
+    } else {
+      // beyond 1000000: 75% off
+      return p / 4 / 1000;
+    }
+  }
+
   function purchaseVote() internal {
     var price = currentPrice();
-    require(votecoin.balanceOf(this) >= price);
-    votecoin.transfer(votecoin.owner(), price);
+    var tierPrice = tierModifier(price);
+    require(votecoin.balanceOf(this) >= tierPrice);
+    votecoin.transfer(votecoin.owner(), tierPrice);
+    voteCount++;
   }
 
   // ADMIN ACTIONS
