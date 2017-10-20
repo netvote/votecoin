@@ -1,1 +1,1 @@
-curl -X POST -H "x-api-key:BD2WQH42jq1qDnNx7tyRh1eOXMWMzq9n2avYSph8" -H "x-netvote-key:$2" https://k3hwglxf2g.execute-api.us-east-1.amazonaws.com/prod/register-voter/$1
+curl -X POST -H "x-api-key:BD2WQH42jq1qDnNx7tyRh1eOXMWMzq9n2avYSph8" -H "x-netvote-key:$1" https://k3hwglxf2g.execute-api.us-east-1.amazonaws.com/prod/register-voter/0x3929d0B606fA930b4c2D48127d02536Fe8980A26

@@ -3,7 +3,7 @@
 console.log('Loading function');
 
 const Web3 = require('web3');
-const electionInterface = require('./RegisterableElection.json');
+const ELECTION_ABI = require('./RegisterableElection.json');
 
 /**
  * Demonstrates a simple HTTP endpoint using API Gateway. You have full
@@ -34,6 +34,13 @@ exports.handler = (event, context, callback) => {
     let electionId = event.pathParameters.electionId;
     let netvoteKey = event.headers["x-netvote-key"];
     const web3 = new Web3(new Web3.providers.HttpProvider(infuraUrl+infuraToken));
+
+    new web3.eth.Contract(ELECTION_ABI);
+
+    let elections = new web3.eth.Contract(ELECTION_ABI);
+    let election = elections.at(electionId);
+
+    console.log("IPFS:",election.methods.getIPFSReference());
 
     /*
         connect to contract
