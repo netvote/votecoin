@@ -6,6 +6,8 @@ contract PrivateElection is Election {
 
     mapping (address => bool) public voters;
 
+    function PrivateElection(string ref, uint[] optionCounts) Election(ref, optionCounts) {}
+
     modifier inVoterList() {
         require(voters[msg.sender]);
         _;

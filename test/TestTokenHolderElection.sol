@@ -9,8 +9,9 @@ contract TestTokenHolderElection is BaseElectionTest {
 
     function testCastTokenHolderVote(){
         // test token
+        var dec = new uint[](0);
         MintableToken token = new MintableToken();
-        TokenHolderElection e = new TokenHolderElection(token);
+        TokenHolderElection e = new TokenHolderElection("",dec,token);
 
         // grant token to owner so he is now token-owner
         token.mint(e.owner(), 1);

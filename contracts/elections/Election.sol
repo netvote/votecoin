@@ -33,6 +33,16 @@ contract Election is Ownable, GasPayer {
     bytes32 name;
   }
 
+  function Election(string ref, uint[] optionCounts) Ownable() {
+    ipfsReference = ref;
+    delete decisions;
+    for (uint256 i = 0; i < optionCounts.length; i++) {
+      decisions.push(Decision({
+        tally: new uint[](optionCounts[i])
+      }));
+    }
+  }
+
   //TODO: will not be needed eventually
   modifier votecoinAddressSet() {
     require(address(0) != address(votecoin));

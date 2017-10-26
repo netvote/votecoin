@@ -7,7 +7,8 @@ import "./BaseElectionTest.sol";
 contract TestRepeatableElection is BaseElectionTest {
 
     function testSingleRepeatableVote(){
-        RepeatableElection e = new RepeatableElection(1);
+        var dec = new uint[](0);
+        RepeatableElection e = new RepeatableElection("",dec,1);
         addDecisions(e);
         setCheap(e);
         e.activate();
@@ -18,7 +19,8 @@ contract TestRepeatableElection is BaseElectionTest {
 
 
     function testMultipleRepeatableVote(){
-        RepeatableElection e = new RepeatableElection(0);
+        var dec = new uint[](0);
+        RepeatableElection e = new RepeatableElection("",dec,0);
         addDecisions(e);
         addCoin(e, 1000000000000000000);
         setVotesPerVotecoin(e, 2);

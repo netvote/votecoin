@@ -7,7 +7,8 @@ import "./BaseElectionTest.sol";
 contract TestRegisterableElection is BaseElectionTest {
 
     function testRegisterElection(){
-        RegisterableElection e = new RegisterableElection();
+        var dec = new uint[](0);
+        RegisterableElection e = new RegisterableElection("",dec);
         addDecisions(e);
         setCheap(e);
 

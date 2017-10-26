@@ -7,7 +7,8 @@ import "./BaseElectionTest.sol";
 contract TestPrivateElection is BaseElectionTest {
 
     function testUpdateAddress(){
-        PrivateElection b = new PrivateElection();
+        var dec = new uint[](0);
+        PrivateElection b = new PrivateElection("",dec);
         b.addVoter(b.owner());
         Assert.equal(b.voters(b.owner()), true, "Owner should be true");
         Assert.equal(b.voters(address(b)), false, "Address should be false");
@@ -18,8 +19,9 @@ contract TestPrivateElection is BaseElectionTest {
     }
 
     function testCastPrivateVote(){
+        var dec = new uint[](0);
         //create ballot with 2 decisions
-        PrivateElection e = new PrivateElection();
+        PrivateElection e = new PrivateElection("",dec);
         e.addVoter(e.owner());
         addDecisions(e);
         setCheap(e);

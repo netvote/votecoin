@@ -6,6 +6,8 @@ contract RegisterableElection is PrivateElection {
 
     mapping (bytes32 => bool) public pinHashes;
 
+    function RegisterableElection(string ref, uint[] optionCounts) PrivateElection(ref, optionCounts) {}
+
     function register(string pin) {
         var hsh = sha3(pin);
         require(pinHashes[hsh]);

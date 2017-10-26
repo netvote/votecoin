@@ -7,11 +7,13 @@ import "./BaseElectionTest.sol";
 
 contract TestElection is BaseElectionTest {
     function testInitialization() {
-        Election b = new Election();
+        var dec = new uint[](0);
+        Election b = new Election("",dec);
     }
 
     function testCastVote(){
-        Election e = new Election();
+        var dec = new uint[](0);
+        Election e = new Election("",dec);
         addDecisions(e);
         setCheap(e);
         e.activate();
@@ -21,7 +23,8 @@ contract TestElection is BaseElectionTest {
     }
 
     function testCastVoteChangePrice(){
-        Election e = new Election();
+        var dec = new uint[](0);
+        Election e = new Election("",dec);
         addDecisions(e);
         setExpensive(e);
         e.activate();
@@ -31,7 +34,8 @@ contract TestElection is BaseElectionTest {
     }
 
     function testLowerPriceDuringElection(){
-        Election e = new Election();
+        var dec = new uint[](0);
+        Election e = new Election("",dec);
         addDecisions(e);
 
         // start with expensive
