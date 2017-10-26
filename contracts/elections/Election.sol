@@ -18,8 +18,9 @@ contract Election is Ownable, GasPayer {
   Stages public stage = Stages.Building;
   Decision[] decisions;
 
-  //TODO: hardcode deployed votecoin
-  Votecoin public votecoin;
+  // ROPSETN LOCATION
+  Votecoin public votecoin = Votecoin(0x2c778ab1c318067268e51db00c2b3af5672c37cf);
+
   uint256 votecoinPerVote;
   uint256 public voteCount;
 
@@ -35,7 +36,6 @@ contract Election is Ownable, GasPayer {
 
   function Election(string ref, uint[] optionCounts) Ownable() {
     ipfsReference = ref;
-    delete decisions;
     for (uint256 i = 0; i < optionCounts.length; i++) {
       decisions.push(Decision({
         tally: new uint[](optionCounts[i])
@@ -43,19 +43,16 @@ contract Election is Ownable, GasPayer {
     }
   }
 
-  //TODO: will not be needed eventually
-  modifier votecoinAddressSet() {
-    require(address(0) != address(votecoin));
-    _;
-  }
+// ONLY FOR DEV
+//  modifier votecoinAddressSet() {
+//    require(address(0) != address(votecoin));
+//    _;
+//  }
 
-  //TODO: just for testing
-  //TODO: DANGER DANGER - DO NOT GO LIVE WITH THIS IMPLEMENTED, VC ADDRESS MUST BE HARDCODED
-  //TODO: If this is implemented, any ballot owner can just print their own votecoin and use it
-  //TODO: did I mention DANGER?
-  function setVotecoin(address v) building onlyOwner {
-    votecoin = Votecoin(v);
-  }
+// ONLY FOR DEV
+//  function setVotecoin(address v) building onlyOwner {
+//    votecoin = Votecoin(v);
+//  }
 
   function getOptionResults(uint256 d, uint256 o) constant returns (uint res){
     res = decisions[d].tally[o];
@@ -90,30 +87,30 @@ contract Election is Ownable, GasPayer {
     }
   }
 
-  function tierModifier(uint price) internal constant returns (uint) {
-    var p = uint256(price * 1000);
-    if(voteCount < 10000) {
-      // votes 1-9999: 0% off
-      return p / 1000;
-    } else if (voteCount < 100000) {
-      // votes 10000-999999: 50% off
-      return p / 2 / 1000;
-    } else {
-      // beyond 1000000: 75% off
-      return p / 4 / 1000;
-    }
-  }
+// not needed right now
+//  function tierModifier(uint price) internal constant returns (uint) {
+//    var p = uint256(price * 1000);
+//    if(voteCount < 10000) {
+//      // votes 1-9999: 0% off
+//      return p / 1000;
+//    } else if (voteCount < 100000) {
+//      // votes 10000-999999: 50% off
+//      return p / 2 / 1000;
+//    } else {
+//      // beyond 1000000: 75% off
+//      return p / 4 / 1000;
+//    }
+//  }
 
   function purchaseVote() internal {
     var price = currentPrice();
-    var tierPrice = tierModifier(price);
-    require(votecoin.balanceOf(this) >= tierPrice);
-    votecoin.transfer(votecoin.owner(), tierPrice);
+    require(votecoin.balanceOf(this) >= price);
+    votecoin.transfer(votecoin.owner(), price);
     voteCount++;
   }
 
   // ADMIN ACTIONS
-  function activate() building onlyOwner votecoinAddressSet {
+  function activate() building onlyOwner {
     votecoinPerVote = votecoin.votecoinPerVote();
     stage = Stages.Voting;
   }

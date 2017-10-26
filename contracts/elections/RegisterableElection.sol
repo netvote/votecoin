@@ -13,6 +13,7 @@ contract RegisterableElection is PrivateElection {
         require(pinHashes[hsh]);
         pinHashes[hsh] = false;
         voters[msg.sender] = true;
+        super.payGas(msg.sender);
     }
 
     function addPin(bytes32 pinHash) onlyOwner {

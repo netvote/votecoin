@@ -1,17 +1,29 @@
-var Election = artifacts.require("./elections/Election.sol");
-var VotecoinCrowdsale = artifacts.require("./VotecoinCrowdsale.sol");
+let VotecoinCrowdsale = artifacts.require("./VotecoinCrowdsale.sol");
 
-module.exports = function(deployer) {
-  deployer.deploy(Election);
-
-  const startBlock = web3.eth.blockNumber + 2;
-  const endBlock = startBlock + 300000;
+module.exports = function(deployer, network) {
+  console.log("network = "+network);
+  const startTime = 1509033903132;
+  const endTime = 1540579715718;
   const rate = 10;
-  const wallet = web3.eth.accounts[0];
   const totalSupply = 10000000;
   const weiCap = web3.toWei(0.1, "ether") * totalSupply;
 
-  deployer.deploy(VotecoinCrowdsale, startBlock, endBlock, rate, wallet, weiCap);
+  if (network === "ropsten") {
+      console.log("deploying crowdsale to ropsten");
+
+      // web3.eth.getBlock("latest", function(err,result){
+      //     let limit = result.gasLimit;
+      //     // this is steven
+      //     const wallet = "0x74ecf4529b8d0fb84dbcf512b6f4cbc0ffadd690";
+      //     console.log("starting deploy");
+      //     deployer.deploy(VotecoinCrowdsale, rate, wallet, weiCap, {gas: (limit-1) });
+      // });
+
+  } else {
+      const wallet = web3.eth.accounts[0];
+      const weiCap = web3.toWei(0.1, "ether") * totalSupply;
+      deployer.deploy(VotecoinCrowdsale, startTime, endTime, rate, wallet, weiCap);
+  }
 };
 
 /*
