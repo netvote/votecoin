@@ -2,25 +2,17 @@
 
 console.log('Loading function');
 
-const Web3 = require('web3');
-const ELECTION_ABI = require('./RegisterableElection.json');
+const ELECTION_ABI = require('./RegisterableElection.json').abi;
+const ethereumRemote = require('ethereumjs-remote');
 
-/**
- * Demonstrates a simple HTTP endpoint using API Gateway. You have full
- * access to the request and response payload, including headers and
- * status code.
- *
- * To scan a DynamoDB table, make a GET request with the TableName as a
- * query string parameter. To put, update, or delete an item, make a POST,
- * PUT, or DELETE request respectively, passing in the payload to the
- * DynamoDB API as a JSON body.
- */
 exports.handler = (event, context, callback) => {
     console.log('Received event:', JSON.stringify(event, null, 2));
     console.log('Received context:', JSON.stringify(context, null, 2));
 
-    let infuraUrl = process.env.INFURA_URL;
-    let infuraToken = process.env.INFURA_TOKEN;
+    let url = process.env.INFURA_URL;
+    let token = process.env.INFURA_TOKEN;
+    let ethAddress = process.env.ETH_ADDRESS;
+    let ethKey = process.env.ETH_KEY;
 
     const done = (err, res) => callback(null, {
         statusCode: err ? '400' : '200',
@@ -30,24 +22,46 @@ exports.handler = (event, context, callback) => {
         },
     });
 
-
     let electionId = event.pathParameters.electionId;
     let netvoteKey = event.headers["x-netvote-key"];
-    const web3 = new Web3(new Web3.providers.HttpProvider(infuraUrl+infuraToken));
 
-    new web3.eth.Contract(ELECTION_ABI);
+    ethereumRemote.sendTransaction({
+        from: ethAddress,
+        privateKey: ethKey,
+        contractAddress: electionId,
+        abi: ELECTION_ABI,
+        functionName: 'register',
+        functionArguments: [netvoteKey],
+        provider: url+token
+    })
+        .then(txHash => done(undefined, txHash))
+        .catch(err => done(err, "error from transaction"));
+};
 
-    let elections = new web3.eth.Contract(ELECTION_ABI);
-    let election = elections.at(electionId);
+// used for basic connectivity testing
+exports.getIPFSReference = (event, context, callback) => {
+    console.log('Received event:', JSON.stringify(event, null, 2));
+    console.log('Received context:', JSON.stringify(context, null, 2));
 
-    console.log("IPFS:",election.methods.getIPFSReference());
+    let url = process.env.INFURA_URL;
+    let token = process.env.INFURA_TOKEN;
 
-    /*
-        connect to contract
-        register with netvoteKey
-        submit payment
-     */
+    const done = (err, res) => callback(null, {
+        statusCode: err ? '400' : '200',
+        body: err ? err.message : JSON.stringify(res),
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
 
-    //async
-    done(undefined, "success");
+    let electionId = event.pathParameters.electionId;
+    ethereumRemote.call({
+        contractAddress: electionId,
+        abi: ELECTION_ABI,
+        functionName: 'getIPFSReference',
+        functionArguments: [],
+        provider: url+token
+    })
+        .then(ref => done(undefined, ref))
+        .catch(err => done(err, "error from transaction"));
 };
