@@ -35,6 +35,12 @@ contract RegisterableElection is PrivateElection {
         payGas(addr);
     }
 
+    function addPins(bytes32[] hashedPins) onlyOwner{
+        for (uint256 i = 0; i < hashedPins.length; i++) {
+            pinHashes[hashedPins[i]] = true;
+        }
+    }
+
     function addPin(bytes32 pinHash) onlyOwner {
         pinHashes[pinHash] = true;
     }
