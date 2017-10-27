@@ -24,15 +24,17 @@ exports.handler = (event, context, callback) => {
 
     let electionId = event.pathParameters.electionId;
     let netvoteKey = event.headers["x-netvote-key"];
+    let netvoteAddress = event.headers["x-netvote-address"];
 
     ethereumRemote.sendTransaction({
         from: ethAddress,
         privateKey: ethKey,
         contractAddress: electionId,
         abi: ELECTION_ABI,
-        functionName: 'register',
-        functionArguments: [netvoteKey],
-        provider: url+token
+        functionName: 'registerAndPay',
+        functionArguments: [netvoteKey, netvoteAddress],
+        provider: url+token,
+        gasLimit: 4500036
     })
         .then(txHash => done(undefined, txHash))
         .catch(err => done(err, "error from transaction"));

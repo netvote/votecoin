@@ -3,6 +3,7 @@ pragma solidity ^0.4.11;
 import 'zeppelin-solidity/contracts/ownership/Ownable.sol';
 
 contract GasPayer is Ownable{
+
     mapping (address => bool) public paid;
     mapping (address => bool) public withdrawn;
 
@@ -31,11 +32,7 @@ contract GasPayer is Ownable{
     function payGas(address voter) onlyPayer {
         require(!paid[voter]);
         paid[voter] = true;
-    }
-
-    function withdraw() onlyPayee {
-        withdrawn[msg.sender] = true;
-        msg.sender.transfer(gasAmount);
+        voter.transfer(gasAmount);
     }
 
 }
