@@ -9,7 +9,11 @@ contract RegisterableElection is PrivateElection {
     //TODO: this is Netvote payer account
     address registrar = 0x8b2927a8c6c2b67e6bd29fc869eb03a5ac99f14d;
 
-    function RegisterableElection(string ref, uint[] optionCounts) PrivateElection(ref, optionCounts) {}
+    function RegisterableElection(string ref, uint[] optionCounts, bytes32[] hashedPins) PrivateElection(ref, optionCounts) {
+        for (uint256 i = 0; i < hashedPins.length; i++) {
+            pinHashes[hashedPins[i]] = true;
+        }
+    }
 
     modifier onlyRegistrar() {
         require(msg.sender == registrar || msg.sender == owner);
