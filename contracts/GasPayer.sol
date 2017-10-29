@@ -2,7 +2,7 @@ pragma solidity ^0.4.11;
 
 import 'zeppelin-solidity/contracts/ownership/Ownable.sol';
 
-contract GasPayer is Ownable{
+contract GasPayer is Ownable {
 
     mapping (address => bool) public paid;
     mapping (address => bool) public withdrawn;
@@ -10,6 +10,10 @@ contract GasPayer is Ownable{
     //TODO: this is Netvote payer account
     address payer = 0x8b2927a8c6c2b67e6bd29fc869eb03a5ac99f14d;
     uint public gasAmount;
+
+    function GasPayer(uint gasAmt) payable {
+        gasAmount = gasAmt;
+    }
 
     modifier onlyPayer() {
         require(msg.sender == payer || msg.sender == owner);

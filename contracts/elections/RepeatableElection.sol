@@ -7,7 +7,7 @@ contract RepeatableElection is Election {
     mapping (address => uint) public lastVote;
     uint public secondsBetweenVote;
 
-    function RepeatableElection(string ref, uint[] optionCounts, uint secBetweenVote) Election(ref, optionCounts){
+    function RepeatableElection(string ref, uint[] optionCounts, uint secBetweenVote, uint gasAmt) Election(ref, optionCounts, gasAmt) payable {
         secondsBetweenVote = secBetweenVote;
     }
 

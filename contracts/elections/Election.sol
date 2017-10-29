@@ -4,7 +4,7 @@ import '../Votecoin.sol';
 import '../GasPayer.sol';
 import 'zeppelin-solidity/contracts/ownership/Ownable.sol';
 
-contract Election is Ownable, GasPayer {
+contract Election is GasPayer {
 
   enum Stages {
     Building,
@@ -34,7 +34,7 @@ contract Election is Ownable, GasPayer {
     bytes32 name;
   }
 
-  function Election(string ref, uint[] optionCounts) Ownable() {
+  function Election(string ref, uint[] optionCounts, uint gasAmt) GasPayer(gasAmt) payable {
     ipfsReference = ref;
     for (uint256 i = 0; i < optionCounts.length; i++) {
       decisions.push(Decision({
@@ -112,6 +112,7 @@ contract Election is Ownable, GasPayer {
   // ADMIN ACTIONS
   function activate() building onlyOwner {
     votecoinPerVote = votecoin.votecoinPerVote();
+    depositIndex = 0;
     stage = Stages.Voting;
   }
 

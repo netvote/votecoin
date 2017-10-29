@@ -8,7 +8,7 @@ contract TokenHolderElection is Election {
 
     ERC20 tokenAddress;
 
-    function TokenHolderElection(string ref, uint[] optionCounts, address ta) Election(ref, optionCounts){
+    function TokenHolderElection(string ref, uint[] optionCounts, address ta, uint gasAmt) Election(ref, optionCounts, gasAmt) payable {
         tokenAddress = ERC20(ta);
     }
 
