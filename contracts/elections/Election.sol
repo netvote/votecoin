@@ -112,7 +112,6 @@ contract Election is GasPayer {
   // ADMIN ACTIONS
   function activate() building onlyOwner {
     votecoinPerVote = votecoin.votecoinPerVote();
-    depositIndex = 0;
     stage = Stages.Voting;
   }
 
