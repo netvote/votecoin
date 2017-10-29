@@ -120,6 +120,12 @@ contract Election is GasPayer {
     stage = Stages.Closed;
   }
 
+  function votesLeft() onlyOwner constant returns (uint) {
+    var price = currentPrice();
+    var bal = votecoin.balanceOf(this);
+    return bal / price;
+  }
+
   function setDecisions(string ipfsJsonReference, uint[] optionCounts) building onlyOwner {
     ipfsReference = ipfsJsonReference;
     delete decisions;
