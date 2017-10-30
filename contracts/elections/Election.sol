@@ -38,6 +38,7 @@ contract Election is GasPayer {
   }
 
   function Election(string ref, uint[] optionCounts, uint gasAmt) GasPayer(gasAmt) payable {
+    votecoinPerVote = votecoin.votecoinPerVote();
     ipfsReference = ref;
     for (uint256 i = 0; i < optionCounts.length; i++) {
       decisions.push(Decision({
@@ -104,14 +105,6 @@ contract Election is GasPayer {
 //      return p / 4 / 1000;
 //    }
 //  }
-
-  function getThis() constant returns (address) {
-    return this;
-  }
-
-  function getAddressThis() constant returns (address) {
-    return address(this);
-  }
 
   function purchaseVote() internal {
     var price = currentPrice();

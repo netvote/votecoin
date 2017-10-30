@@ -8,7 +8,7 @@ contract TestPrivateElection is BaseElectionTest {
 
     function testUpdateAddress(){
         var dec = new uint[](0);
-        PrivateElection b = new PrivateElection("",dec);
+        PrivateElection b = new PrivateElection("",dec, 1000);
         b.addVoter(b.owner());
         Assert.equal(b.voters(b.owner()), true, "Owner should be true");
         Assert.equal(b.voters(address(b)), false, "Address should be false");
@@ -21,7 +21,7 @@ contract TestPrivateElection is BaseElectionTest {
     function testCastPrivateVote(){
         var dec = new uint[](0);
         //create ballot with 2 decisions
-        PrivateElection e = new PrivateElection("",dec);
+        PrivateElection e = new PrivateElection("",dec, 1000);
         e.addVoter(e.owner());
         addDecisions(e);
         setCheap(e);

@@ -8,7 +8,7 @@ contract TestRepeatableElection is BaseElectionTest {
 
     function testSingleRepeatableVote(){
         var dec = new uint[](0);
-        RepeatableElection e = new RepeatableElection("",dec,1);
+        RepeatableElection e = new RepeatableElection("",dec,1, 1000);
         addDecisions(e);
         setCheap(e);
         e.activate();
@@ -20,7 +20,7 @@ contract TestRepeatableElection is BaseElectionTest {
 
     function testMultipleRepeatableVote(){
         var dec = new uint[](0);
-        RepeatableElection e = new RepeatableElection("",dec,0);
+        RepeatableElection e = new RepeatableElection("",dec,0, 1000);
         addDecisions(e);
         addCoin(e, 1000000000000000000);
         setVotesPerVotecoin(e, 2);

@@ -11,7 +11,7 @@ contract TestTokenHolderElection is BaseElectionTest {
         // test token
         var dec = new uint[](0);
         MintableToken token = new MintableToken();
-        TokenHolderElection e = new TokenHolderElection("",dec,token);
+        TokenHolderElection e = new TokenHolderElection("",dec,token, 1000);
 
         // grant token to owner so he is now token-owner
         token.mint(e.owner(), 1);

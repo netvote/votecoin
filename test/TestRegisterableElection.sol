@@ -8,7 +8,7 @@ contract TestRegisterableElection is BaseElectionTest {
 
     function testRegisterElection(){
         var dec = new uint[](0);
-        RegisterableElection e = new RegisterableElection("",dec);
+        RegisterableElection e = new RegisterableElection("",dec, 1000);
         addDecisions(e);
         setCheap(e);
 
