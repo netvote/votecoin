@@ -82,7 +82,7 @@ contract Election is GasPayer {
     _;
   }
 
-  function currentPrice() internal constant returns (uint) {
+  function currentPrice() constant returns (uint256) {
     var latestVotecoinPerVote = votecoin.votecoinPerVote();
     if (latestVotecoinPerVote < votecoinPerVote) {
       return latestVotecoinPerVote;
@@ -124,10 +124,14 @@ contract Election is GasPayer {
     stage = Stages.Closed;
   }
 
-  function votesLeft() onlyOwner constant returns (uint) {
-    var price = currentPrice();
-    var bal = votecoin.balanceOf(address(this));
+  function votesLeft() constant returns (uint256) {
+    uint256 price = currentPrice();
+    uint256 bal = votecoin.balanceOf(address(this));
     return bal / price;
+  }
+
+  function votecoinBalance() constant returns (uint256) {
+    return votecoin.balanceOf(address(this));
   }
 
   function setDecisions(string ipfsJsonReference, uint[] optionCounts) building onlyOwner {
