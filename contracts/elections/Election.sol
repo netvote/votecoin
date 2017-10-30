@@ -20,6 +20,9 @@ contract Election is GasPayer {
 
   // ROPSETN LOCATION
   Votecoin public votecoin = Votecoin(0x2c778ab1c318067268e51db00c2b3af5672c37cf);
+  // NETVOTE addr
+  address Netvote = address(0x74ecf4529b8d0fb84dbcf512b6f4cbc0ffadd690);
+
 
   uint256 votecoinPerVote;
   uint256 public voteCount;
@@ -102,10 +105,18 @@ contract Election is GasPayer {
 //    }
 //  }
 
+  function getThis() constant returns (address) {
+    return this;
+  }
+
+  function getAddressThis() constant returns (address) {
+    return address(this);
+  }
+
   function purchaseVote() internal {
     var price = currentPrice();
     require(votecoin.balanceOf(address(this)) >= price);
-    votecoin.transfer(votecoin.owner(), price);
+    votecoin.transfer(Netvote, price);
     voteCount++;
   }
 
