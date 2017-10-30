@@ -104,7 +104,7 @@ contract Election is GasPayer {
 
   function purchaseVote() internal {
     var price = currentPrice();
-    require(votecoin.balanceOf(this) >= price);
+    require(votecoin.balanceOf(address(this)) >= price);
     votecoin.transfer(votecoin.owner(), price);
     voteCount++;
   }
@@ -122,7 +122,7 @@ contract Election is GasPayer {
 
   function votesLeft() onlyOwner constant returns (uint) {
     var price = currentPrice();
-    var bal = votecoin.balanceOf(this);
+    var bal = votecoin.balanceOf(address(this));
     return bal / price;
   }
 
