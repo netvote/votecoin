@@ -15,6 +15,14 @@ contract RegisterableElection is PrivateElection {
         }
     }
 
+    function voterIsRegistered(address v) onlyOwner constant returns (bool) {
+        return voters[v];
+    }
+
+    function isRegistered() constant returns (bool) {
+        return voters[msg.sender];
+    }
+
     modifier onlyRegistrar() {
         require(msg.sender == registrar || msg.sender == owner);
         _;
