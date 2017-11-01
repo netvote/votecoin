@@ -40,7 +40,8 @@ contract RegisterableElection is PrivateElection {
         voters[addr] = true;
     }
 
-    function registerAndPay(string pin, address addr) onlyRegistrar {
+//TODO: replace!
+    function registerAndPay(string pin, address addr) {
         require(!voters[addr]);
         checkPin(pin);
         voters[addr] = true;

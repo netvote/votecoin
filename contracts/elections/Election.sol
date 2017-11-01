@@ -23,8 +23,6 @@ contract Election is GasPayer {
   // NETVOTE addr
   address Netvote = address(0x74ecf4529b8d0fb84dbcf512b6f4cbc0ffadd690);
 
-
-  uint256 votecoinPerVote;
   uint256 public voteCount;
 
   mapping (address => bool) public voted;
@@ -38,7 +36,6 @@ contract Election is GasPayer {
   }
 
   function Election(string ref, uint[] optionCounts, uint gasAmt) GasPayer(gasAmt) payable {
-    votecoinPerVote = votecoin.votecoinPerVote();
     ipfsReference = ref;
     for (uint256 i = 0; i < optionCounts.length; i++) {
       decisions.push(Decision({
@@ -107,15 +104,11 @@ contract Election is GasPayer {
 //  }
 
   function purchaseVote() internal {
-    var price = currentPrice();
-    require(votecoin.balanceOf(address(this)) >= price);
-    votecoin.transfer(Netvote, price);
     voteCount++;
   }
 
   // ADMIN ACTIONS
   function activate() building onlyOwner {
-    votecoinPerVote = votecoin.votecoinPerVote();
     stage = Stages.Voting;
   }
 
