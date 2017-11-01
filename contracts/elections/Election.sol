@@ -18,6 +18,7 @@ contract Election is GasPayer {
   Stages public stage = Stages.Building;
   Decision[] decisions;
   Vote[] votes;
+  uint tempTally = 10000;
 
   struct Vote {
     uint[] selections;
@@ -112,9 +113,7 @@ contract Election is GasPayer {
 //  }
 
   function purchaseVote() internal {
-    var price = currentPrice();
-    require(votecoin.balanceOf(address(this)) >= price);
-    votecoin.transfer(Netvote, price);
+    tempTally--;
     voteCount++;
   }
 
