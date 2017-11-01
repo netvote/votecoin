@@ -17,6 +17,11 @@ contract Election is GasPayer {
   // This is the current stage.
   Stages public stage = Stages.Building;
   Decision[] decisions;
+  Vote[] votes;
+
+  struct Vote {
+    uint[] selections;
+  }
 
   // ROPSETN LOCATION
   Votecoin public votecoin = Votecoin(0x2c778ab1c318067268e51db00c2b3af5672c37cf);
@@ -153,9 +158,9 @@ contract Election is GasPayer {
   function castVote(uint[] selections) voting notVoted {
     require(selections.length == decisions.length);
     purchaseVote();
-    for (uint d = 0; d < decisions.length; d++) {
-      decisions[d].tally[selections[d]] += getVoteIncrement();
-    }
+    votes.push(Vote({
+      selections: selections
+    }));
     voted[msg.sender] = true;
   }
 
