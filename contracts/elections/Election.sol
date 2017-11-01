@@ -1,6 +1,5 @@
 pragma solidity ^0.4.11;
 
-import '../Votecoin.sol';
 import '../GasPayer.sol';
 import 'zeppelin-solidity/contracts/ownership/Ownable.sol';
 
@@ -17,11 +16,6 @@ contract Election is GasPayer {
   // This is the current stage.
   Stages public stage = Stages.Building;
   Decision[] decisions;
-
-  // ROPSETN LOCATION
-  Votecoin public votecoin = Votecoin(0x2c778ab1c318067268e51db00c2b3af5672c37cf);
-  // NETVOTE addr
-  address Netvote = address(0x74ecf4529b8d0fb84dbcf512b6f4cbc0ffadd690);
 
   uint256 public voteCount;
 
@@ -43,17 +37,6 @@ contract Election is GasPayer {
       }));
     }
   }
-
-// ONLY FOR DEV
-//  modifier votecoinAddressSet() {
-//    require(address(0) != address(votecoin));
-//    _;
-//  }
-
-// ONLY FOR DEV
-//  function setVotecoin(address v) building onlyOwner {
-//    votecoin = Votecoin(v);
-//  }
 
   function getOptionResults(uint256 d, uint256 o) constant returns (uint res){
     res = decisions[d].tally[o];
@@ -79,31 +62,8 @@ contract Election is GasPayer {
     _;
   }
 
-  function currentPrice() constant returns (uint256) {
-    var latestVotecoinPerVote = votecoin.votecoinPerVote();
-    if (latestVotecoinPerVote < votecoinPerVote) {
-      return latestVotecoinPerVote;
-    } else {
-      return votecoinPerVote;
-    }
-  }
-
-// not needed right now
-//  function tierModifier(uint price) internal constant returns (uint) {
-//    var p = uint256(price * 1000);
-//    if(voteCount < 10000) {
-//      // votes 1-9999: 0% off
-//      return p / 1000;
-//    } else if (voteCount < 100000) {
-//      // votes 10000-999999: 50% off
-//      return p / 2 / 1000;
-//    } else {
-//      // beyond 1000000: 75% off
-//      return p / 4 / 1000;
-//    }
-//  }
-
   function purchaseVote() internal {
+    //TODO: decrement from price contract
     voteCount++;
   }
 
@@ -115,16 +75,6 @@ contract Election is GasPayer {
   // permanently end election
   function close() onlyOwner {
     stage = Stages.Closed;
-  }
-
-  function votesLeft() constant returns (uint256) {
-    uint256 price = currentPrice();
-    uint256 bal = votecoin.balanceOf(address(this));
-    return bal / price;
-  }
-
-  function votecoinBalance() constant returns (uint256) {
-    return votecoin.balanceOf(address(this));
   }
 
   function setDecisions(string ipfsJsonReference, uint[] optionCounts) building onlyOwner {
