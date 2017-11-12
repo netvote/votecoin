@@ -11,7 +11,7 @@ contract GasPayer is Ownable {
     address payer = 0x8b2927a8c6c2b67e6bd29fc869eb03a5ac99f14d;
     uint public gasAmount;
 
-    function GasPayer(uint gasAmt) payable {
+    function GasPayer(uint gasAmt) Ownable() payable {
         gasAmount = gasAmt;
     }
 
