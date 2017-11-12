@@ -15,7 +15,7 @@ contract LocalElection is GasPayer {
 
     function castVotes(string vote, string encryptionSeed){
         for(uint256 i = 0; i<ballotAddresses.length; i++) {
-            ParentElection(ballotAddresses[i]).castVote(i, ballotAddresses, vote, encryptionSeed);
+            ParentElection(ballotAddresses[i]).castVote(i, ballotAddresses, msg.sender, vote, encryptionSeed);
         }
     }
 }

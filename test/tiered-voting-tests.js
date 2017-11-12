@@ -9,7 +9,6 @@ contract('Base Election', (accounts)=> {
     let localElection;
     let admin = accounts[1];
     let voter = accounts[2];
-    let hierarchy;
     let vote = "encrypted-vote-contents";
     let encryptSeed = "seed";
     let ref = "ipfs";
@@ -26,7 +25,7 @@ contract('Base Election', (accounts)=> {
             return ParentElection.new(ref, {from: admin})
         }).then((e) => {
             district = e;
-            return LocalElection.new([district.address, state.address, federal.address], 1000, {from: admin});
+            return LocalElection.new([district.address, state.address, federal.address], gasAmt, {from: admin});
         }).then ((e) => {
             localElection = e;
             return federal.addSender(localElection.address, {from: admin}).then(()=>{

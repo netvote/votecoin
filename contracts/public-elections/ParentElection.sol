@@ -60,17 +60,17 @@ contract ParentElection is Ownable {
         return voterVotes[groupVotes[group].voterList[index]];
     }
 
-    function castVote(uint256 index, address[] ballots, string vote, string encryptionSeed) voting {
+    function castVote(uint256 index, address[] ballots, address voter, string vote, string encryptionSeed) voting {
         require(ballots[index] == address(this));
-        require(!voterVoted[tx.origin]);
+        require(!voterVoted[voter]);
         require(allowedSenders[msg.sender]);
 
-        voterVoted[tx.origin] = true;
-        encryptionSeeds[tx.origin] = encryptionSeed;
-        voterList.push(tx.origin);
-        voterVotes[tx.origin] = vote;
+        voterVoted[voter] = true;
+        encryptionSeeds[voter] = encryptionSeed;
+        voterList.push(voter);
+        voterVotes[voter] = vote;
         for (uint256 i = 0; i <= index; i++) {
-            groupVotes[ballots[i]].voterList.push(tx.origin);
+            groupVotes[ballots[i]].voterList.push(voter);
         }
     }
 
