@@ -1,10 +1,10 @@
 pragma solidity ^0.4.11;
 
 import '../GasPayer.sol';
-import './ParentElection.sol';
+import './Election.sol';
 
 
-contract LocalElection is GasPayer {
+contract RegistrationPool is GasPayer {
     mapping (address => bool) public voters;
     mapping (bytes32 => bool) public registrationPins;
     address[] ballotAddresses;
@@ -14,16 +14,16 @@ contract LocalElection is GasPayer {
         _;
     }
 
-    function LocalElection(address[] ballots, uint gasAmt, bytes32[] hashedPins) GasPayer(gasAmt) payable {
+    function RegistrationPool(address[] ballots, uint gasAmt, bytes32[] hashedPins) GasPayer(gasAmt) payable {
         ballotAddresses = ballots;
         for (uint256 i = 0; i < hashedPins.length; i++) {
             registrationPins[hashedPins[i]] = true;
         }
     }
 
-    function castVotes(string vote, string encryptionSeed) onlyVoter {
+    function castVotes(string vote) onlyVoter {
         for(uint256 i = 0; i<ballotAddresses.length; i++) {
-            ParentElection(ballotAddresses[i]).castVote(i, ballotAddresses, msg.sender, vote, encryptionSeed);
+            Election(ballotAddresses[i]).castVote(i, ballotAddresses, msg.sender, vote);
         }
     }
 

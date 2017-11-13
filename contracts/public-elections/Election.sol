@@ -2,7 +2,7 @@ pragma solidity ^0.4.11;
 
 import 'zeppelin-solidity/contracts/ownership/Ownable.sol';
 
-contract ParentElection is Ownable {
+contract Election is Ownable {
 
     enum Stages {
         Building,
@@ -10,7 +10,7 @@ contract ParentElection is Ownable {
         Closed
     }
 
-    function ParentElection(string ref) {
+    function Election(string ref) {
         ipfsReference = ref;
     }
 
@@ -24,7 +24,6 @@ contract ParentElection is Ownable {
     mapping (address => string) voterVotes;
     mapping (address => bool) voterVoted;
     mapping (address => GroupVotes) groupVotes;
-    mapping (address => string) encryptionSeeds;
     mapping (address => bool) allowedSenders;
 
     // for iteration of votes/groups
@@ -60,13 +59,12 @@ contract ParentElection is Ownable {
         return voterVotes[groupVotes[group].voterList[index]];
     }
 
-    function castVote(uint256 index, address[] ballots, address voter, string vote, string encryptionSeed) voting {
+    function castVote(uint256 index, address[] ballots, address voter, string vote) voting {
         require(ballots[index] == address(this));
         require(!voterVoted[voter]);
         require(allowedSenders[msg.sender]);
 
         voterVoted[voter] = true;
-        encryptionSeeds[voter] = encryptionSeed;
         voterList.push(voter);
         voterVotes[voter] = vote;
         for (uint256 i = 0; i <= index; i++) {
