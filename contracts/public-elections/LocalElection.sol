@@ -4,18 +4,62 @@ import '../GasPayer.sol';
 import './ParentElection.sol';
 
 
-//TODO: add registration of voter
 contract LocalElection is GasPayer {
-
+    mapping (address => bool) public voters;
+    mapping (bytes32 => bool) public registrationPins;
     address[] ballotAddresses;
 
-    function LocalElection(address[] ballots, uint gasAmt) GasPayer(gasAmt) payable {
-        ballotAddresses = ballots;
+    modifier onlyVoter() {
+        require(voters[msg.sender]);
+        _;
     }
 
-    function castVotes(string vote, string encryptionSeed){
+    function LocalElection(address[] ballots, uint gasAmt, bytes32[] hashedPins) GasPayer(gasAmt) payable {
+        ballotAddresses = ballots;
+        for (uint256 i = 0; i < hashedPins.length; i++) {
+            registrationPins[hashedPins[i]] = true;
+        }
+    }
+
+    function castVotes(string vote, string encryptionSeed) onlyVoter {
         for(uint256 i = 0; i<ballotAddresses.length; i++) {
             ParentElection(ballotAddresses[i]).castVote(i, ballotAddresses, msg.sender, vote, encryptionSeed);
         }
     }
+
+    function register(string pin, address addr) internal {
+        require(!voters[addr]);
+        checkPin(pin);
+        voters[addr] = true;
+    }
+
+    function registerSelf(string pin) {
+        register(pin, msg.sender);
+    }
+
+    function registerAndPaySelf(string pin) {
+        registerSelf(pin);
+        payGas(msg.sender);
+    }
+
+    function addPins(bytes32[] hashedPins) onlyOwner {
+        for (uint256 i = 0; i < hashedPins.length; i++) {
+            registrationPins[hashedPins[i]] = true;
+        }
+    }
+
+    function addPin(bytes32 pinHash) onlyOwner {
+        registrationPins[pinHash] = true;
+    }
+
+    function removePin(bytes32 pinHash) onlyOwner {
+        registrationPins[pinHash] = false;
+    }
+
+    function checkPin(string pin) internal {
+        var hsh = sha3(pin);
+        require(registrationPins[hsh]);
+        registrationPins[hsh] = false;
+    }
+
 }

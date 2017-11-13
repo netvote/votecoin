@@ -13,6 +13,7 @@ contract('Base Election', (accounts)=> {
     let encryptSeed = "seed";
     let ref = "ipfs";
     let gasAmt = 12345;
+    let pin = "password";
 
 
     // create elections
@@ -25,7 +26,7 @@ contract('Base Election', (accounts)=> {
             return ParentElection.new(ref, {from: admin})
         }).then((e) => {
             district = e;
-            return LocalElection.new([district.address, state.address, federal.address], gasAmt, {from: admin});
+            return LocalElection.new([district.address, state.address, federal.address], gasAmt, [web3.sha3(pin)], {from: admin});
         }).then ((e) => {
             localElection = e;
             return federal.addSender(localElection.address, {from: admin}).then(()=>{
@@ -33,6 +34,8 @@ contract('Base Election', (accounts)=> {
             }).then(()=>{
                 return district.addSender(localElection.address, {from: admin})
             });
+        }).then (() => {
+            return localElection.registerSelf(pin, {from: voter});
         }).then (() => {
             return federal.activate({from: admin})
         }).then(() => {
